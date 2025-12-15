@@ -228,19 +228,23 @@ Tab.BackgroundTransparency = 1
 Tab.Size = UDim2.new(1, 0, 1, 0)
 Tab.Visible = false
 
--- YENİ: TabScrolling eklendi
+-- TabScrolling güncellendi - kaydırma çubuğu eklendi
 TabScrolling.Name = "TabScrolling"
 TabScrolling.Parent = Tab
 TabScrolling.BackgroundColor3 = Color3.new(1, 1, 1)
 TabScrolling.BackgroundTransparency = 1
 TabScrolling.Size = UDim2.new(1, 0, 1, 0)
-TabScrolling.ScrollBarThickness = 8  -- KAYDIRMA ÇUBUĞU EKLENDİ
+TabScrolling.ScrollBarThickness = 6
 TabScrolling.ScrollingDirection = Enum.ScrollingDirection.Y
-TabScrolling.ScrollBarImageColor3 = Color3.fromRGB(100, 100, 100)
+TabScrolling.ScrollBarImageColor3 = Color3.fromRGB(120, 120, 120)
+TabScrolling.ScrollBarImageTransparency = 0.5
+TabScrolling.ScrollingEnabled = true
+TabScrolling.VerticalScrollBarInset = Enum.ScrollBarInset.Always
 TabScrolling.CanvasSize = UDim2.new(0, 0, 0, 0)
 TabScrolling.AutomaticCanvasSize = Enum.AutomaticSize.Y
+TabScrolling.ElasticBehavior = Enum.ElasticBehavior.Never
 
-UIListLayout_2.Parent = TabScrolling  -- DEĞİŞTİ: TabScrolling'e eklendi
+UIListLayout_2.Parent = TabScrolling
 UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
 UIListLayout_2.Padding = UDim.new(0, 5)
 
@@ -1294,17 +1298,55 @@ function library:AddWindow(title, options)
 				new_tab.ZIndex = new_tab.ZIndex + (windows * 10)
 				new_tab.Visible = false
 
-				-- Tab içeriği için mouse tekerleği desteği
+				-- Tab içeriği için kaydırma ve mobil desteği
 				local tab_scrolling = new_tab:FindFirstChild("TabScrolling")
 				if tab_scrolling then
+					-- Mouse tekerleği desteği
 					tab_scrolling.MouseWheelForward:Connect(function()
 						local current = tab_scrolling.CanvasPosition
-						tab_scrolling.CanvasPosition = Vector2.new(0, current.Y - 40)
+						local newY = math.max(0, current.Y - 40)
+						tab_scrolling.CanvasPosition = Vector2.new(0, newY)
 					end)
 					
 					tab_scrolling.MouseWheelBackward:Connect(function()
 						local current = tab_scrolling.CanvasPosition
-						tab_scrolling.CanvasPosition = Vector2.new(0, current.Y + 40)
+						local maxScroll = tab_scrolling.AbsoluteCanvasSize.Y - tab_scrolling.AbsoluteWindowSize.Y
+						local newY = math.min(maxScroll, current.Y + 40)
+						tab_scrolling.CanvasPosition = Vector2.new(0, newY)
+					end)
+					
+					-- Mobil dokunma kaydırma desteği
+					local touchStartPosition = nil
+					local touchStartScroll = nil
+					local isTouching = false
+					
+					tab_scrolling.InputBegan:Connect(function(input)
+						if input.UserInputType == Enum.UserInputType.Touch then
+							touchStartPosition = input.Position
+							touchStartScroll = tab_scrolling.CanvasPosition
+							isTouching = true
+						end
+					end)
+					
+					tab_scrolling.InputEnded:Connect(function(input)
+						if input.UserInputType == Enum.UserInputType.Touch then
+							isTouching = false
+							touchStartPosition = nil
+							touchStartScroll = nil
+						end
+					end)
+					
+					tab_scrolling.InputChanged:Connect(function(input)
+						if input.UserInputType == Enum.UserInputType.Touch and isTouching then
+							if touchStartPosition and touchStartScroll then
+								local delta = touchStartPosition - input.Position
+								local newY = math.max(0, math.min(
+									tab_scrolling.AbsoluteCanvasSize.Y - tab_scrolling.AbsoluteWindowSize.Y,
+									touchStartScroll.Y + delta.Y
+								))
+								tab_scrolling.CanvasPosition = Vector2.new(0, newY)
+							end
+						end
 					end)
 				end
 
@@ -1448,7 +1490,7 @@ function library:AddWindow(title, options)
 
 						local label = Prefabs:FindFirstChild("Label"):Clone()
 
-						-- DEĞİŞTİRİLDİ: TabScrolling'e eklenecek
+						-- TabScrolling'e eklenecek
 						local tab_scrolling = new_tab:FindFirstChild("TabScrolling")
 						label.Parent = tab_scrolling
 						label.Text = label_text
@@ -1464,7 +1506,7 @@ function library:AddWindow(title, options)
 
 						local button = Prefabs:FindFirstChild("Button"):Clone()
 
-						-- DEĞİŞTİRİLDİ: TabScrolling'e eklenecek
+						-- TabScrolling'e eklenecek
 						local tab_scrolling = new_tab:FindFirstChild("TabScrolling")
 						button.Parent = tab_scrolling
 						button.Text = button_text
@@ -1491,7 +1533,7 @@ function library:AddWindow(title, options)
 
 						local switch = Prefabs:FindFirstChild("Switch"):Clone()
 
-						-- DEĞİŞTİRİLDİ: TabScrolling'e eklenecek
+						-- TabScrolling'e eklenecek
 						local tab_scrolling = new_tab:FindFirstChild("TabScrolling")
 						switch.Parent = tab_scrolling
 						switch:FindFirstChild("Title").Text = switch_text
@@ -1530,7 +1572,7 @@ function library:AddWindow(title, options)
 
 						local textbox = Prefabs:FindFirstChild("TextBox"):Clone()
 						textbox.Size = UDim2.new(0.5, -5, 0, 20)
-						-- DEĞİŞTİRİLDİ: TabScrolling'e eklenecek
+						-- TabScrolling'e eklenecek
 						local tab_scrolling = new_tab:FindFirstChild("TabScrolling")
 						textbox.Parent = tab_scrolling
 						textbox.PlaceholderText = textbox_text
@@ -1570,7 +1612,7 @@ function library:AddWindow(title, options)
 
 						local slider = Prefabs:FindFirstChild("Slider"):Clone()
 
-						-- DEĞİŞTİRİLDİ: TabScrolling'e eklenecek
+						-- TabScrolling'e eklenecek
 						local tab_scrolling = new_tab:FindFirstChild("TabScrolling")
 						slider.Parent = tab_scrolling
 						slider.ZIndex = slider.ZIndex + (windows * 10)
@@ -1694,7 +1736,7 @@ function library:AddWindow(title, options)
 						input:GetChildren()[1].ZIndex = input:GetChildren()[1].ZIndex + (windows * 10)
 						title.ZIndex = title.ZIndex + (windows * 10)
 
-						-- DEĞİŞTİRİLDİ: TabScrolling'e eklenecek
+						-- TabScrolling'e eklenecek
 						local tab_scrolling = new_tab:FindFirstChild("TabScrolling")
 						keybind.Parent = tab_scrolling
 						title.Text = "  " .. keybind_name
@@ -1772,7 +1814,7 @@ function library:AddWindow(title, options)
 						objects.Position = UDim2.new(0, 0, 0, 0)
 						objects.Size = UDim2.new(1, 0, 1, 0)
 
-						-- DEĞİŞTİRİLDİ: TabScrolling'e eklenecek
+						-- TabScrolling'e eklenecek
 						local tab_scrolling = new_tab:FindFirstChild("TabScrolling")
 						dropdown.Parent = tab_scrolling
 						dropdown.Text = "      " .. dropdown_name
@@ -1886,7 +1928,7 @@ function library:AddWindow(title, options)
 
 						local color_picker = Prefabs:FindFirstChild("ColorPicker"):Clone()
 
-						-- DEĞİŞTİRİLDİ: TabScrolling'e eklenecek
+						-- TabScrolling'e eklenecek
 						local tab_scrolling = new_tab:FindFirstChild("TabScrolling")
 						color_picker.Parent = tab_scrolling
 						color_picker.ZIndex = color_picker.ZIndex + (windows * 10)
@@ -2032,7 +2074,7 @@ function library:AddWindow(title, options)
 
 						local console = Prefabs:FindFirstChild("Console"):Clone()
 
-						-- DEĞİŞTİRİLDİ: TabScrolling'e eklenecek
+						-- TabScrolling'e eklenecek
 						local tab_scrolling = new_tab:FindFirstChild("TabScrolling")
 						console.Parent = tab_scrolling
 						console.ZIndex = console.ZIndex + (windows * 10)
@@ -2405,7 +2447,7 @@ function library:AddWindow(title, options)
 						local ha_data = {}
 
 						local ha = Prefabs:FindFirstChild("HorizontalAlignment"):Clone()
-						-- DEĞİŞTİRİLDİ: TabScrolling'e eklenecek
+						-- TabScrolling'e eklenecek
 						local tab_scrolling = new_tab:FindFirstChild("TabScrolling")
 						ha.Parent = tab_scrolling
 
@@ -2442,7 +2484,7 @@ function library:AddWindow(title, options)
 						toggle.ZIndex = toggle.ZIndex + (windows * 10)
 						button:GetChildren()[1].ZIndex = button:GetChildren()[1].ZIndex + (windows * 10)
 
-						-- DEĞİŞTİRİLDİ: TabScrolling'e eklenecek
+						-- TabScrolling'e eklenecek
 						local tab_scrolling = new_tab:FindFirstChild("TabScrolling")
 						folder.Parent = tab_scrolling
 						button.Text = "      " .. folder_name
