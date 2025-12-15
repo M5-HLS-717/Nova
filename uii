@@ -205,7 +205,7 @@ TabButtons.Parent = TabSelection
 TabButtons.BackgroundColor3 = Color3.new(1, 1, 1)
 TabButtons.BackgroundTransparency = 1
 TabButtons.Size = UDim2.new(1, 0, 1, 0)
-TabButtons.ScrollBarThickness = 1
+TabButtons.ScrollBarThickness = 3
 TabButtons.ScrollingDirection = Enum.ScrollingDirection.X
 TabButtons.AutomaticCanvasSize = Enum.AutomaticSize.X
 TabButtons.CanvasSize = UDim2.new(0, 0, 0, 0)
@@ -239,7 +239,17 @@ TabScrolling.ScrollBarThickness = 8
 TabScrolling.CanvasSize = UDim2.new(0, 0, 0, 0)
 TabScrolling.AutomaticCanvasSize = Enum.AutomaticSize.Y
 
-UIListLayout_2.Parent = TabScrolling
+
+TabScrolling.Name = "TabScrolling"
+TabScrolling.Parent = Tab
+TabScrolling.BackgroundColor3 = Color3.new(1, 1, 1)
+TabScrolling.BackgroundTransparency = 1
+TabScrolling.Size = UDim2.new(1, 0, 1, 0)
+TabScrolling.ScrollBarThickness = 8
+TabScrolling.CanvasSize = UDim2.new(0, 0, 0, 0)
+TabScrolling.AutomaticCanvasSize = Enum.AutimalSize.Y
+
+UIListLayout_2.Parent = TabScrolling  
 UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
 UIListLayout_2.Padding = UDim.new(0, 5)
 
@@ -1431,7 +1441,7 @@ function library:AddWindow(title, options)
 
 						-- Değişiklik: TabScrolling'e eklenecek
 						local tab_scrolling = new_tab:FindFirstChild("TabScrolling")
-						label.Parent = tab_scrolling or new_tab
+						button.Parent = tab_scrolling
 						label.Text = label_text
 						label.Size = UDim2.new(0, gNameLen(label), 0, 20)
 						label.ZIndex = label.ZIndex + (windows * 10)
@@ -1474,7 +1484,7 @@ function library:AddWindow(title, options)
 
 						-- Değişiklik: TabScrolling'e eklenecek
 						local tab_scrolling = new_tab:FindFirstChild("TabScrolling")
-						switch.Parent = tab_scrolling or new_tab
+						switch.Parent = tab_scrolling
 						switch:FindFirstChild("Title").Text = switch_text
 
 						switch:FindFirstChild("Title").ZIndex = switch:FindFirstChild("Title").ZIndex + (windows * 10)
@@ -1513,7 +1523,7 @@ function library:AddWindow(title, options)
 						textbox.Size = UDim2.new(0.5, -5, 0, 20)
 						-- Değişiklik: TabScrolling'e eklenecek
 						local tab_scrolling = new_tab:FindFirstChild("TabScrolling")
-						textbox.Parent = tab_scrolling or new_tab
+						textbox.Parent = tab_scrolling
 						textbox.PlaceholderText = textbox_text
 						textbox.ZIndex = textbox.ZIndex + (windows * 10)
 						local textboxBg = textbox:GetChildren()[1]
@@ -1553,7 +1563,7 @@ function library:AddWindow(title, options)
 
 						-- Değişiklik: TabScrolling'e eklenecek
 						local tab_scrolling = new_tab:FindFirstChild("TabScrolling")
-						slider.Parent = tab_scrolling or new_tab
+						slider.Parent = tab_scrolling
 						slider.ZIndex = slider.ZIndex + (windows * 10)
 
 						local title = slider:FindFirstChild("Title")
@@ -1677,7 +1687,7 @@ function library:AddWindow(title, options)
 
 						-- Değişiklik: TabScrolling'e eklenecek
 						local tab_scrolling = new_tab:FindFirstChild("TabScrolling")
-						keybind.Parent = tab_scrolling or new_tab
+						keybind.Parent = tab_scrolling
 						title.Text = "  " .. keybind_name
 						keybind.Size = UDim2.new(0, gNameLen(title) + 80, 0, 20)
 
@@ -1755,7 +1765,7 @@ function library:AddWindow(title, options)
 
 						-- Değişiklik: TabScrolling'e eklenecek
 						local tab_scrolling = new_tab:FindFirstChild("TabScrolling")
-						dropdown.Parent = tab_scrolling or new_tab
+						dropdown.Parent = tab_scrolling
 						dropdown.Text = "      " .. dropdown_name
 						box.Size = UDim2.new(1, 0, 0, 0)
 						dropdown.TextColor3 = Color3.new(1, 1, 1)
@@ -1869,7 +1879,7 @@ function library:AddWindow(title, options)
 
 						-- Değişiklik: TabScrolling'e eklenecek
 						local tab_scrolling = new_tab:FindFirstChild("TabScrolling")
-						color_picker.Parent = tab_scrolling or new_tab
+						color_picker.Parent = tab_scrolling
 						color_picker.ZIndex = color_picker.ZIndex + (windows * 10)
 
 						local palette = color_picker:FindFirstChild("Palette")
@@ -2015,7 +2025,7 @@ function library:AddWindow(title, options)
 
 						-- Değişiklik: TabScrolling'e eklenecek
 						local tab_scrolling = new_tab:FindFirstChild("TabScrolling")
-						console.Parent = tab_scrolling or new_tab
+						console.Parent = tab_scrolling
 						console.ZIndex = console.ZIndex + (windows * 10)
 						console.Size = UDim2.new(1, 0, console_options.full and 1 or 0, console_options.y)
 
@@ -2388,7 +2398,7 @@ function library:AddWindow(title, options)
 						local ha = Prefabs:FindFirstChild("HorizontalAlignment"):Clone()
 						-- Değişiklik: TabScrolling'e eklenecek
 						local tab_scrolling = new_tab:FindFirstChild("TabScrolling")
-						ha.Parent = tab_scrolling or new_tab
+						ha.Parent = tab_scrolling
 
 						function ha_data:AddButton(...)
 							local data, object
@@ -2425,7 +2435,7 @@ function library:AddWindow(title, options)
 
 						-- Değişiklik: TabScrolling'e eklenecek
 						local tab_scrolling = new_tab:FindFirstChild("TabScrolling")
-						folder.Parent = tab_scrolling or new_tab
+						folder.Parent = tab_scrolling
 						button.Text = "      " .. folder_name
 
 						spawn(function()
