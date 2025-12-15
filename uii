@@ -1232,6 +1232,17 @@ function library:AddWindow(title, options)
 		local tabs = Window:FindFirstChild("Tabs")
 		local tab_selection = Window:FindFirstChild("TabSelection")
 		local tab_buttons = tab_selection:FindFirstChild("TabButtons")
+		
+		-- Tab butonları için mouse tekerleği desteği
+		tab_buttons.MouseWheelForward:Connect(function()
+			local current = tab_buttons.CanvasPosition
+			tab_buttons.CanvasPosition = Vector2.new(current.X - 30, 0)
+		end)
+		
+		tab_buttons.MouseWheelBackward:Connect(function()
+			local current = tab_buttons.CanvasPosition
+			tab_buttons.CanvasPosition = Vector2.new(current.X + 30, 0)
+		end)
 
 		local activeTabButton = nil
 		local activeParticleConnection = nil
