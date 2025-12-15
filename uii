@@ -234,7 +234,9 @@ TabScrolling.Parent = Tab
 TabScrolling.BackgroundColor3 = Color3.new(1, 1, 1)
 TabScrolling.BackgroundTransparency = 1
 TabScrolling.Size = UDim2.new(1, 0, 1, 0)
-TabScrolling.ScrollBarThickness = 8
+TabScrolling.ScrollBarThickness = 8  -- KAYDIRMA ÇUBUĞU EKLENDİ
+TabScrolling.ScrollingDirection = Enum.ScrollingDirection.Y
+TabScrolling.ScrollBarImageColor3 = Color3.fromRGB(100, 100, 100)
 TabScrolling.CanvasSize = UDim2.new(0, 0, 0, 0)
 TabScrolling.AutomaticCanvasSize = Enum.AutomaticSize.Y
 
@@ -1291,6 +1293,20 @@ function library:AddWindow(title, options)
 				new_tab.Parent = tabs
 				new_tab.ZIndex = new_tab.ZIndex + (windows * 10)
 				new_tab.Visible = false
+
+				-- Tab içeriği için mouse tekerleği desteği
+				local tab_scrolling = new_tab:FindFirstChild("TabScrolling")
+				if tab_scrolling then
+					tab_scrolling.MouseWheelForward:Connect(function()
+						local current = tab_scrolling.CanvasPosition
+						tab_scrolling.CanvasPosition = Vector2.new(0, current.Y - 40)
+					end)
+					
+					tab_scrolling.MouseWheelBackward:Connect(function()
+						local current = tab_scrolling.CanvasPosition
+						tab_scrolling.CanvasPosition = Vector2.new(0, current.Y + 40)
+					end)
+				end
 
 				local function createSimpleParticles(button)
 					if button ~= activeTabButton then
