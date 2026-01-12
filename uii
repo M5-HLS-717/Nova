@@ -1,6 +1,6 @@
 local a = {
     main_color = Color3.fromRGB(41, 74, 122),
-    min_size = Vector2.new(400, 300),
+    min_size = Vector2.new(450, 450),
     toggle_key = Enum.KeyCode.RightShift,
     can_resize = true
 }
@@ -925,6 +925,39 @@ function bd:AddWindow(bi, bj)
     if not bj.main_color then
         bj.main_color = bj.title_bar[1]
     end
+    local function bl(bm)
+        local bn = workspace.CurrentCamera.ViewportSize
+        local bo = bn.X
+        local bp = bn.Y
+        local bq = 1
+        if bo <= 768 then
+            bq = 0.65
+        elseif bo <= 1024 then
+            bq = 0.8
+        elseif bo <= 1920 then
+            bq = 1.3
+        else
+            bq = 1.6
+        end
+        local br = math.min(bm.X * bq, bo * 1)
+        local bs = math.min(bm.Y * bq, bp * 0.8)
+        return Vector2.new(br, bs)
+    end
+    bj.min_size = bl(bj.min_size or Vector2.new(450, 450))
+    local bn = workspace.CurrentCamera.ViewportSize
+    local bt = bn
+    workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(
+        function()
+            local bu = workspace.CurrentCamera.ViewportSize
+            if (bu - bt).Magnitude > 50 then
+                bt = bu
+                local bv = bl(Vector2.new(450, 450))
+                if e.AbsoluteSize.X < bv.X or e.AbsoluteSize.Y < bv.Y then
+                    e.Size = UDim2.new(0, bv.X, 0, bv.Y)
+                end
+            end
+        end
+    )
     local e = c:FindFirstChild("Window"):Clone()
     e.Parent = ak
     e:FindFirstChild("Title").Text = bi
@@ -937,10 +970,10 @@ function bd:AddWindow(bi, bj)
         local i = g:FindFirstChild("Base")
         local j = g:FindFirstChild("Top")
         local m = e:FindFirstChild("TabSelection")
-        local bl = m:FindFirstChild("Frame")
-        local bm = 24
-        local bn = (bm - 18) / 2
-        g.Size = UDim2.new(1, 0, 0, bm)
+        local bw = m:FindFirstChild("Frame")
+        local bx = 24
+        local by = (bx - 18) / 2
+        g.Size = UDim2.new(1, 0, 0, bx)
         g.Position = UDim2.new(0, 0, 0, 0)
         if i then
             i:Destroy()
@@ -948,17 +981,17 @@ function bd:AddWindow(bi, bj)
         if j then
             j:Destroy()
         end
-        local bo = Instance.new("UICorner")
-        bo.CornerRadius = UDim.new(0, 5)
-        bo.Parent = g
+        local bz = Instance.new("UICorner")
+        bz.CornerRadius = UDim.new(0, 5)
+        bz.Parent = g
         if h then
-            h.Position = UDim2.new(0, 5, 0, bn)
+            h.Position = UDim2.new(0, 5, 0, by)
         end
         if l then
-            local bp = 25
-            local bq = 5
-            l.Position = UDim2.new(0, bp, 0, bn)
-            l.Size = UDim2.new(1, -(bp + bq), 1, -bn * 2)
+            local bA = 25
+            local bB = 5
+            l.Position = UDim2.new(0, bA, 0, by)
+            l.Size = UDim2.new(1, -(bA + bB), 1, -by * 2)
             l.TextXAlignment = Enum.TextXAlignment.Center
         end
         g.BackgroundTransparency = bj.title_bar_transparency
@@ -966,86 +999,86 @@ function bd:AddWindow(bi, bj)
         if m then
             m.Size = UDim2.new(1, -30, 0, 22)
             m.Position = UDim2.new(0, 15, 0, 28)
-            local br = Instance.new("UICorner")
-            br.CornerRadius = UDim.new(0, 6)
-            br.Parent = m
+            local bC = Instance.new("UICorner")
+            bC.CornerRadius = UDim.new(0, 6)
+            bC.Parent = m
             m.ImageTransparency = 0.4
             aH(m, bj.title_bar, 45)
-            local bs = m:FindFirstChild("TabScrolling")
-            if bs then
-                local bt = bs:FindFirstChild("TabButtons")
-                if bt then
-                    local bu = bt:FindFirstChild("UIListLayout")
-                    if bu then
-                        bu.VerticalAlignment = Enum.VerticalAlignment.Center
-                        bu.Padding = UDim.new(0, 12)
+            local bD = m:FindFirstChild("TabScrolling")
+            if bD then
+                local bE = bD:FindFirstChild("TabButtons")
+                if bE then
+                    local bF = bE:FindFirstChild("UIListLayout")
+                    if bF then
+                        bF.VerticalAlignment = Enum.VerticalAlignment.Center
+                        bF.Padding = UDim.new(0, 12)
                     end
                 end
             end
-            if bl then
-                bl:Destroy()
+            if bw then
+                bw:Destroy()
             end
         end
         e.ImageTransparency = bj.background_transparency
         aH(e, bj.background, 45)
-        local bv = e:FindFirstChild("Tabs")
+        local bG = e:FindFirstChild("Tabs")
         h.MouseButton1Click:Connect(
             function()
-                local bw = bv.Visible
-                if bw then
-                    bv.Visible = false
-                    az(e, {Size = UDim2.new(0, e.AbsoluteSize.X, 0, bm)}, bj.tween_time)
+                local bH = bG.Visible
+                if bH then
+                    bG.Visible = false
+                    az(e, {Size = UDim2.new(0, e.AbsoluteSize.X, 0, bx)}, bj.tween_time)
                 else
-                    bv.Visible = true
+                    bG.Visible = true
                     e.Size = UDim2.new(0, e.AbsoluteSize.X, 0, bj.min_size.Y)
                 end
             end
         )
     end
     local f = e:WaitForChild("Resizer")
-    local bx = {}
+    local bI = {}
     e.Draggable = true
     do
-        local by = aq.Icon
-        local bz = false
+        local bJ = aq.Icon
+        local bK = false
         f.MouseEnter:Connect(
             function()
                 e.Draggable = false
                 if bj.can_resize then
-                    by = aq.Icon
+                    bJ = aq.Icon
                 end
-                bz = true
+                bK = true
             end
         )
         f.MouseLeave:Connect(
             function()
-                bz = false
+                bK = false
                 if bj.can_resize then
-                    aq.Icon = by
+                    aq.Icon = bJ
                 end
                 e.Draggable = true
             end
         )
-        local bA = false
-        local bB
+        local bL = false
+        local bM
         al.InputBegan:Connect(
-            function(bC)
-                if bC.UserInputType == Enum.UserInputType.MouseButton1 then
-                    bA = true
-                    if bz and f.Active and bj.can_resize then
-                        bB =
+            function(bN)
+                if bN.UserInputType == Enum.UserInputType.MouseButton1 then
+                    bL = true
+                    if bK and f.Active and bj.can_resize then
+                        bM =
                             an.Heartbeat:Connect(
                             function()
-                                if not bA or not f.Active then
-                                    if bB then
-                                        bB:Disconnect()
-                                        bB = nil
+                                if not bL or not f.Active then
+                                    if bM then
+                                        bM:Disconnect()
+                                        bM = nil
                                     end
                                     return
                                 end
-                                local bD = b3()
-                                local b6 = bD.X - e.AbsolutePosition.X
-                                local b7 = bD.Y - e.AbsolutePosition.Y
+                                local bO = b3()
+                                local b6 = bO.X - e.AbsolutePosition.X
+                                local b7 = bO.Y - e.AbsolutePosition.Y
                                 b6 = math.max(bj.min_size.X, b6)
                                 b7 = math.max(bj.min_size.Y, b7)
                                 e.Size = UDim2.new(0, b6, 0, b7)
@@ -1056,430 +1089,430 @@ function bd:AddWindow(bi, bj)
             end
         )
         al.InputEnded:Connect(
-            function(bC)
-                if bC.UserInputType == Enum.UserInputType.MouseButton1 then
-                    bA = false
-                    if bB then
-                        bB:Disconnect()
-                        bB = nil
+            function(bN)
+                if bN.UserInputType == Enum.UserInputType.MouseButton1 then
+                    bL = false
+                    if bM then
+                        bM:Disconnect()
+                        bM = nil
                     end
                 end
             end
         )
     end
     do
-        local bE = e:FindFirstChild("Bar"):FindFirstChild("Toggle")
-        local bF = true
-        local bG = true
-        local bH = {}
-        local bI = e.AbsoluteSize.Y
-        bE.MouseButton1Click:Connect(
+        local bP = e:FindFirstChild("Bar"):FindFirstChild("Toggle")
+        local bQ = true
+        local bR = true
+        local bS = {}
+        local bT = e.AbsoluteSize.Y
+        bP.MouseButton1Click:Connect(
             function()
-                if not bG then
+                if not bR then
                     return
                 end
-                bG = false
-                if bF then
-                    bH = {}
+                bR = false
+                if bQ then
+                    bS = {}
                     for aw, aW in ipairs(e:FindFirstChild("Tabs"):GetChildren()) do
-                        bH[aW] = aW.Visible
+                        bS[aW] = aW.Visible
                         aW.Visible = false
                     end
                     f.Active = false
-                    bI = e.AbsoluteSize.Y
-                    az(bE, {Rotation = 0}, bj.tween_time)
+                    bT = e.AbsoluteSize.Y
+                    az(bP, {Rotation = 0}, bj.tween_time)
                     local aG = az(e, {Size = UDim2.new(0, e.AbsoluteSize.X, 0, 26)}, bj.tween_time)
-                    if bE.Parent:FindFirstChild("Base") then
-                        bE.Parent:FindFirstChild("Base").Transparency = 1
+                    if bP.Parent:FindFirstChild("Base") then
+                        bP.Parent:FindFirstChild("Base").Transparency = 1
                     end
                 else
-                    for bh, aW in pairs(bH) do
+                    for bh, aW in pairs(bS) do
                         bh.Visible = aW
                     end
                     f.Active = true
-                    az(bE, {Rotation = 0}, bj.tween_time)
-                    local aG = az(e, {Size = UDim2.new(0, e.AbsoluteSize.X, 0, bI)}, bj.tween_time)
-                    if bE.Parent:FindFirstChild("Base") then
-                        bE.Parent:FindFirstChild("Base").Transparency = bj.title_bar_transparency
+                    az(bP, {Rotation = 0}, bj.tween_time)
+                    local aG = az(e, {Size = UDim2.new(0, e.AbsoluteSize.X, 0, bT)}, bj.tween_time)
+                    if bP.Parent:FindFirstChild("Base") then
+                        bP.Parent:FindFirstChild("Base").Transparency = bj.title_bar_transparency
                     end
                 end
-                bF = not bF
+                bQ = not bQ
                 task.delay(
                     bj.tween_time,
                     function()
-                        bG = true
+                        bR = true
                     end
                 )
             end
         )
     end
     do
-        local bJ = e:FindFirstChild("Tabs")
-        local bK = e:FindFirstChild("TabSelection")
-        local bL = bK:FindFirstChild("TabScrolling")
-        local bM = bL:FindFirstChild("TabButtons")
-        local bN = nil
-        local bO = nil
-        local function bP()
-            local bQ = 0
-            local bR = bM:FindFirstChildOfClass("UIListLayout").Padding.Offset or 0
-            for aw, bS in ipairs(bM:GetChildren()) do
-                if bS:IsA("TextButton") then
-                    bQ = bQ + bS.AbsoluteSize.X + bR
+        local bU = e:FindFirstChild("Tabs")
+        local bV = e:FindFirstChild("TabSelection")
+        local bW = bV:FindFirstChild("TabScrolling")
+        local bX = bW:FindFirstChild("TabButtons")
+        local bY = nil
+        local bZ = nil
+        local function b_()
+            local c0 = 0
+            local c1 = bX:FindFirstChildOfClass("UIListLayout").Padding.Offset or 0
+            for aw, c2 in ipairs(bX:GetChildren()) do
+                if c2:IsA("TextButton") then
+                    c0 = c0 + c2.AbsoluteSize.X + c1
                 end
             end
-            bM.Size = UDim2.new(0, bQ, 1, 0)
-            if bL then
-                bL.CanvasSize = UDim2.new(0, bQ, 0, 0)
+            bX.Size = UDim2.new(0, c0, 1, 0)
+            if bW then
+                bW.CanvasSize = UDim2.new(0, c0, 0, 0)
             end
         end
-        function bx:AddTab(bT)
-            local bU = {}
-            bT = tostring(bT or "New Tab")
-            bK.Visible = true
-            local bV = c:FindFirstChild("TabButton"):Clone()
-            bV.Parent = bM
-            bV.Text = bT
-            bV.Size = UDim2.new(0, b1(bV) + 20, 0, 18)
-            bV.ZIndex = bV.ZIndex + bc * 10
-            bV.BackgroundTransparency = 1
-            local bW = bV:GetChildren()[1]
-            bW.ZIndex = bV.ZIndex + bc * 10
-            bW.ImageTransparency = 1
-            local bX = Instance.new("UICorner")
-            bX.CornerRadius = UDim.new(0, 4)
-            bX.Parent = bV
-            bV.TextColor3 = Color3.fromRGB(200, 200, 200)
-            bV.TextSize = 13
-            bV.Font = Enum.Font.FredokaOne
-            local bY = Instance.new("UIStroke")
-            bY.Color = Color3.new(0, 0, 0)
-            bY.Thickness = 1.2
-            bY.Transparency = 0.7
-            bY.Parent = bV
-            local bZ = Instance.new("Frame")
-            bZ.Name = "TabOutline"
-            bZ.Size = UDim2.new(1, 0, 1, 0)
-            bZ.BackgroundTransparency = 1
-            bZ.BorderSizePixel = 2
-            bZ.BorderColor3 = bj.main_color
-            bZ.ZIndex = bV.ZIndex + 10
-            bZ.Visible = false
-            local b_ = Instance.new("UICorner")
-            b_.CornerRadius = UDim.new(0, 4)
-            b_.Parent = bZ
-            bZ.Parent = bV
-            local c0 = c:FindFirstChild("Tab"):Clone()
-            c0.Parent = bJ
-            c0.ZIndex = c0.ZIndex + bc * 10
-            c0.Visible = false
-            c0.ClipsDescendants = false
-            c0.Size = UDim2.new(1, 0, 1, 0)
-            c0.BackgroundTransparency = 1
-            local c1 = Instance.new("ScrollingFrame")
-            c1.Name = "TabScroller"
-            c1.Parent = c0
-            c1.Size = UDim2.new(1, 0, 1, 0)
-            c1.BackgroundTransparency = 1
-            c1.BorderSizePixel = 0
-            c1.ScrollBarThickness = 4
-            c1.CanvasSize = UDim2.new(0, 0, 0, 0)
-            c1.ZIndex = c0.ZIndex
-            c1.ScrollBarImageColor3 = Color3.fromRGB(255, 0, 0)
-            c1.ScrollBarImageTransparency = 0.4
-            local bu = c0:FindFirstChildOfClass("UIListLayout")
-            if bu then
-                bu.Parent = c1
+        function bI:AddTab(c3)
+            local c4 = {}
+            c3 = tostring(c3 or "New Tab")
+            bV.Visible = true
+            local c5 = c:FindFirstChild("TabButton"):Clone()
+            c5.Parent = bX
+            c5.Text = c3
+            c5.Size = UDim2.new(0, b1(c5) + 20, 0, 18)
+            c5.ZIndex = c5.ZIndex + bc * 10
+            c5.BackgroundTransparency = 1
+            local c6 = c5:GetChildren()[1]
+            c6.ZIndex = c5.ZIndex + bc * 10
+            c6.ImageTransparency = 1
+            local c7 = Instance.new("UICorner")
+            c7.CornerRadius = UDim.new(0, 4)
+            c7.Parent = c5
+            c5.TextColor3 = Color3.fromRGB(200, 200, 200)
+            c5.TextSize = 13
+            c5.Font = Enum.Font.FredokaOne
+            local c8 = Instance.new("UIStroke")
+            c8.Color = Color3.new(0, 0, 0)
+            c8.Thickness = 1.2
+            c8.Transparency = 0.7
+            c8.Parent = c5
+            local c9 = Instance.new("Frame")
+            c9.Name = "TabOutline"
+            c9.Size = UDim2.new(1, 0, 1, 0)
+            c9.BackgroundTransparency = 1
+            c9.BorderSizePixel = 2
+            c9.BorderColor3 = bj.main_color
+            c9.ZIndex = c5.ZIndex + 10
+            c9.Visible = false
+            local ca = Instance.new("UICorner")
+            ca.CornerRadius = UDim.new(0, 4)
+            ca.Parent = c9
+            c9.Parent = c5
+            local cb = c:FindFirstChild("Tab"):Clone()
+            cb.Parent = bU
+            cb.ZIndex = cb.ZIndex + bc * 10
+            cb.Visible = false
+            cb.ClipsDescendants = false
+            cb.Size = UDim2.new(1, 0, 1, 0)
+            cb.BackgroundTransparency = 1
+            local cc = Instance.new("ScrollingFrame")
+            cc.Name = "TabScroller"
+            cc.Parent = cb
+            cc.Size = UDim2.new(1, 0, 1, 0)
+            cc.BackgroundTransparency = 1
+            cc.BorderSizePixel = 0
+            cc.ScrollBarThickness = 4
+            cc.CanvasSize = UDim2.new(0, 0, 0, 0)
+            cc.ZIndex = cb.ZIndex
+            cc.ScrollBarImageColor3 = Color3.fromRGB(255, 0, 0)
+            cc.ScrollBarImageTransparency = 0.4
+            local bF = cb:FindFirstChildOfClass("UIListLayout")
+            if bF then
+                bF.Parent = cc
             end
-            local function c2()
-                local c3 = bu.AbsoluteContentSize.Y
-                c1.CanvasSize = UDim2.new(0, 0, 0, c3 + 10)
+            local function cd()
+                local ce = bF.AbsoluteContentSize.Y
+                cc.CanvasSize = UDim2.new(0, 0, 0, ce + 10)
             end
-            bu:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(c2)
-            c2()
-            task.defer(bP)
-            local function c4(b5)
-                if b5 ~= bN then
+            bF:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(cd)
+            cd()
+            task.defer(b_)
+            local function cf(b5)
+                if b5 ~= bY then
                     return
                 end
-                local c5 = b5.AbsoluteSize
+                local cg = b5.AbsoluteSize
                 for bh = 1, 3 do
                     task.spawn(
                         function()
-                            local c6 = Instance.new("Frame")
-                            c6.Name = "SimpleParticle"
-                            c6.Size = UDim2.new(0, 1.5, 0, 1.5)
-                            c6.AnchorPoint = Vector2.new(0.5, 0.5)
-                            c6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                            c6.BorderSizePixel = 0
-                            c6.ZIndex = b5.ZIndex + 15
-                            local bo = Instance.new("UICorner")
-                            bo.CornerRadius = UDim.new(1, 0)
-                            bo.Parent = c6
-                            local c7 = math.random(1, 4)
-                            local c8, c9 = 0, 0
-                            if c7 == 1 then
-                                c8 = math.random(5, c5.X - 5)
-                                c9 = 1
-                            elseif c7 == 2 then
-                                c8 = c5.X - 1
-                                c9 = math.random(5, c5.Y - 5)
-                            elseif c7 == 3 then
-                                c8 = math.random(5, c5.X - 5)
-                                c9 = c5.Y - 1
+                            local ch = Instance.new("Frame")
+                            ch.Name = "SimpleParticle"
+                            ch.Size = UDim2.new(0, 1.5, 0, 1.5)
+                            ch.AnchorPoint = Vector2.new(0.5, 0.5)
+                            ch.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                            ch.BorderSizePixel = 0
+                            ch.ZIndex = b5.ZIndex + 15
+                            local bz = Instance.new("UICorner")
+                            bz.CornerRadius = UDim.new(1, 0)
+                            bz.Parent = ch
+                            local ci = math.random(1, 4)
+                            local cj, ck = 0, 0
+                            if ci == 1 then
+                                cj = math.random(5, cg.X - 5)
+                                ck = 1
+                            elseif ci == 2 then
+                                cj = cg.X - 1
+                                ck = math.random(5, cg.Y - 5)
+                            elseif ci == 3 then
+                                cj = math.random(5, cg.X - 5)
+                                ck = cg.Y - 1
                             else
-                                c8 = 1
-                                c9 = math.random(5, c5.Y - 5)
+                                cj = 1
+                                ck = math.random(5, cg.Y - 5)
                             end
-                            c6.Position = UDim2.new(0, c8, 0, c9)
-                            c6.Parent = b5
-                            local ca, cb = c5.X / 2, c5.Y / 2
-                            local cc, cd = c8 - ca, c9 - cb
-                            local ce = math.sqrt(cc * cc + cd * cd)
-                            cc, cd = cc / ce, cd / ce
-                            local cf = c8 + cc * 6
-                            local cg = c9 + cd * 6
+                            ch.Position = UDim2.new(0, cj, 0, ck)
+                            ch.Parent = b5
+                            local cl, cm = cg.X / 2, cg.Y / 2
+                            local cn, co = cj - cl, ck - cm
+                            local cp = math.sqrt(cn * cn + co * co)
+                            cn, co = cn / cp, co / cp
+                            local cq = cj + cn * 6
+                            local cr = ck + co * 6
                             local aF = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
                             local aG =
-                                am:Create(c6, aF, {Position = UDim2.new(0, cf, 0, cg), BackgroundTransparency = 1})
+                                am:Create(ch, aF, {Position = UDim2.new(0, cq, 0, cr), BackgroundTransparency = 1})
                             aG:Play()
                             task.wait(0.5)
-                            if c6 and c6.Parent then
-                                c6:Destroy()
+                            if ch and ch.Parent then
+                                ch:Destroy()
                             end
                         end
                     )
                 end
             end
-            local function ch()
-                if bO then
-                    bO:Disconnect()
+            local function cs()
+                if bZ then
+                    bZ:Disconnect()
                 end
-                bO =
+                bZ =
                     an.Heartbeat:Connect(
                     function()
-                        if bN and bN.Parent then
-                            c4(bN)
+                        if bY and bY.Parent then
+                            cf(bY)
                             task.wait(0.2)
                         end
                     end
                 )
             end
-            local function ci()
+            local function ct()
                 if bk then
                     return
                 end
-                if bN and bN ~= bV then
-                    local cj = bN:FindFirstChild("TabOutline")
-                    if cj then
-                        cj.Visible = false
+                if bY and bY ~= c5 then
+                    local cu = bY:FindFirstChild("TabOutline")
+                    if cu then
+                        cu.Visible = false
                     end
-                    bN.TextColor3 = Color3.fromRGB(200, 200, 200)
+                    bY.TextColor3 = Color3.fromRGB(200, 200, 200)
                 end
-                for aw, aW in ipairs(bJ:GetChildren()) do
+                for aw, aW in ipairs(bU:GetChildren()) do
                     if aW:IsA("Frame") then
                         aW.Visible = false
                     end
                 end
-                bN = bV
-                local ck = bV:FindFirstChild("TabOutline")
-                if ck then
-                    ck.Visible = true
-                    ck.BorderColor3 = bj.main_color
+                bY = c5
+                local cv = c5:FindFirstChild("TabOutline")
+                if cv then
+                    cv.Visible = true
+                    cv.BorderColor3 = bj.main_color
                 end
-                bV.TextColor3 = Color3.new(1, 1, 1)
-                ch()
-                c0.Visible = true
+                c5.TextColor3 = Color3.new(1, 1, 1)
+                cs()
+                cb.Visible = true
             end
-            bV.MouseButton1Click:Connect(ci)
-            bV.MouseEnter:Connect(
+            c5.MouseButton1Click:Connect(ct)
+            c5.MouseEnter:Connect(
                 function()
-                    if bV ~= bN then
-                        bV.TextColor3 = Color3.fromRGB(230, 230, 230)
+                    if c5 ~= bY then
+                        c5.TextColor3 = Color3.fromRGB(230, 230, 230)
                     end
                 end
             )
-            bV.MouseLeave:Connect(
+            c5.MouseLeave:Connect(
                 function()
-                    if bV ~= bN then
-                        bV.TextColor3 = Color3.fromRGB(200, 200, 200)
+                    if c5 ~= bY then
+                        c5.TextColor3 = Color3.fromRGB(200, 200, 200)
                     end
                 end
             )
-            function bU:Show()
-                ci()
+            function c4:Show()
+                ct()
             end
-            bV.AncestryChanged:Connect(
+            c5.AncestryChanged:Connect(
                 function()
-                    if not bV.Parent then
-                        if bN == bV then
-                            bN = nil
-                            if bO then
-                                bO:Disconnect()
-                                bO = nil
+                    if not c5.Parent then
+                        if bY == c5 then
+                            bY = nil
+                            if bZ then
+                                bZ:Disconnect()
+                                bZ = nil
                             end
                         end
                     end
                 end
             )
-            if #bM:GetChildren() == 2 then
-                ci()
+            if #bX:GetChildren() == 2 then
+                ct()
             end
             do
-                function bU:AddLabel(cl)
-                    cl = tostring(cl or "New Label")
-                    local cm = c:FindFirstChild("Label"):Clone()
-                    local c1 = c0:FindFirstChild("TabScroller")
-                    cm.Parent = c1 or c0
-                    cm.Text = cl
-                    cm.Size = UDim2.new(0, b1(cm), 0, 20)
-                    cm.ZIndex = cm.ZIndex + bc * 10
-                    return cm
+                function c4:AddLabel(cw)
+                    cw = tostring(cw or "New Label")
+                    local cx = c:FindFirstChild("Label"):Clone()
+                    local cc = cb:FindFirstChild("TabScroller")
+                    cx.Parent = cc or cb
+                    cx.Text = cw
+                    cx.Size = UDim2.new(0, b1(cx), 0, 20)
+                    cx.ZIndex = cx.ZIndex + bc * 10
+                    return cx
                 end
-                function bU:AddButton(cn, co)
-                    cn = tostring(cn or "New Button")
-                    co = typeof(co) == "function" and co or function()
+                function c4:AddButton(cy, cz)
+                    cy = tostring(cy or "New Button")
+                    cz = typeof(cz) == "function" and cz or function()
                         end
                     local b5 = c:FindFirstChild("Button"):Clone()
-                    local c1 = c0:FindFirstChild("TabScroller")
-                    b5.Parent = c1 or c0
-                    b5.Text = cn
+                    local cc = cb:FindFirstChild("TabScroller")
+                    b5.Parent = cc or cb
+                    b5.Text = cy
                     b5.Size = UDim2.new(0, b1(b5), 0, 20)
                     b5.ZIndex = b5.ZIndex + bc * 10
-                    local cp = b5:GetChildren()[1]
-                    cp.ZIndex = cp.ZIndex + bc * 10
-                    cp.ImageTransparency = bj.title_bar_transparency or 0
-                    aH(cp, bj.title_bar, 0)
+                    local cA = b5:GetChildren()[1]
+                    cA.ZIndex = cA.ZIndex + bc * 10
+                    cA.ImageTransparency = bj.title_bar_transparency or 0
+                    aH(cA, bj.title_bar, 0)
                     b5.TextColor3 = Color3.new(1, 1, 1)
                     b5.MouseButton1Click:Connect(
                         function()
                             b4(b5, aq.X, aq.Y)
-                            pcall(co)
+                            pcall(cz)
                         end
                     )
                     return b5
                 end
-                function bU:AddSwitch(cq, co)
-                    local cr = {}
-                    cq = tostring(cq or "New Switch")
-                    co = typeof(co) == "function" and co or function()
+                function c4:AddSwitch(cB, cz)
+                    local cC = {}
+                    cB = tostring(cB or "New Switch")
+                    cz = typeof(cz) == "function" and cz or function()
                         end
-                    local cs = c:FindFirstChild("Switch"):Clone()
-                    local c1 = c0:FindFirstChild("TabScroller")
-                    cs.Parent = c1 or c0
-                    cs:FindFirstChild("Title").Text = cq
-                    cs:FindFirstChild("Title").ZIndex = cs:FindFirstChild("Title").ZIndex + bc * 10
-                    cs.ZIndex = cs.ZIndex + bc * 10
-                    local ct = cs:GetChildren()[1]
-                    ct.ZIndex = ct.ZIndex + bc * 10
-                    ct.ImageTransparency = bj.title_bar_transparency or 0
-                    aH(ct, bj.title_bar, 0)
-                    local cu = false
-                    cs.MouseButton1Click:Connect(
+                    local cD = c:FindFirstChild("Switch"):Clone()
+                    local cc = cb:FindFirstChild("TabScroller")
+                    cD.Parent = cc or cb
+                    cD:FindFirstChild("Title").Text = cB
+                    cD:FindFirstChild("Title").ZIndex = cD:FindFirstChild("Title").ZIndex + bc * 10
+                    cD.ZIndex = cD.ZIndex + bc * 10
+                    local cE = cD:GetChildren()[1]
+                    cE.ZIndex = cE.ZIndex + bc * 10
+                    cE.ImageTransparency = bj.title_bar_transparency or 0
+                    aH(cE, bj.title_bar, 0)
+                    local cF = false
+                    cD.MouseButton1Click:Connect(
                         function()
-                            cu = not cu
-                            cs.Text = cu and utf8.char(10003) or ""
-                            pcall(co, cu)
+                            cF = not cF
+                            cD.Text = cF and utf8.char(10003) or ""
+                            pcall(cz, cF)
                         end
                     )
-                    function cr:Set(cv)
-                        cu = typeof(cv) == "boolean" and cv or false
-                        cs.Text = cu and utf8.char(10003) or ""
-                        pcall(co, cu)
+                    function cC:Set(cG)
+                        cF = typeof(cG) == "boolean" and cG or false
+                        cD.Text = cF and utf8.char(10003) or ""
+                        pcall(cz, cF)
                     end
-                    return cr, cs
+                    return cC, cD
                 end
-                function bU:AddTextBox(cw, co, cx)
-                    cw = tostring(cw or "New TextBox")
-                    co = typeof(co) == "function" and co or function()
+                function c4:AddTextBox(cH, cz, cI)
+                    cH = tostring(cH or "New TextBox")
+                    cz = typeof(cz) == "function" and cz or function()
                         end
-                    cx = typeof(cx) == "table" and cx or {clear = false}
-                    cx.clear = cx.clear == true
-                    local cy = c:FindFirstChild("TextBox"):Clone()
-                    cy.Size = UDim2.new(0.5, -5, 0, 20)
-                    local c1 = c0:FindFirstChild("TabScroller")
-                    cy.Parent = c1 or c0
-                    cy.PlaceholderText = cw
-                    cy.ZIndex = cy.ZIndex + bc * 10
-                    local cz = cy:GetChildren()[1]
-                    cz.ZIndex = cz.ZIndex + bc * 10
-                    cz.ImageTransparency = bj.title_bar_transparency or 0
-                    aH(cz, bj.title_bar, 0)
-                    cy.TextColor3 = Color3.new(1, 1, 1)
-                    cy.PlaceholderColor3 = Color3.fromRGB(200, 200, 200)
-                    cy.FocusLost:Connect(
-                        function(cA)
-                            if cA and #cy.Text > 0 then
-                                pcall(co, cy.Text)
-                                if cx.clear then
-                                    cy.Text = ""
+                    cI = typeof(cI) == "table" and cI or {clear = false}
+                    cI.clear = cI.clear == true
+                    local cJ = c:FindFirstChild("TextBox"):Clone()
+                    cJ.Size = UDim2.new(0.5, -5, 0, 20)
+                    local cc = cb:FindFirstChild("TabScroller")
+                    cJ.Parent = cc or cb
+                    cJ.PlaceholderText = cH
+                    cJ.ZIndex = cJ.ZIndex + bc * 10
+                    local cK = cJ:GetChildren()[1]
+                    cK.ZIndex = cK.ZIndex + bc * 10
+                    cK.ImageTransparency = bj.title_bar_transparency or 0
+                    aH(cK, bj.title_bar, 0)
+                    cJ.TextColor3 = Color3.new(1, 1, 1)
+                    cJ.PlaceholderColor3 = Color3.fromRGB(200, 200, 200)
+                    cJ.FocusLost:Connect(
+                        function(cL)
+                            if cL and #cJ.Text > 0 then
+                                pcall(cz, cJ.Text)
+                                if cI.clear then
+                                    cJ.Text = ""
                                 end
                             end
                         end
                     )
-                    return cy
+                    return cJ
                 end
-                function bU:AddSlider(cB, co, cC)
-                    local cD = {}
-                    cB = tostring(cB or "New Slider")
-                    co = typeof(co) == "function" and co or function()
+                function c4:AddSlider(cM, cz, cN)
+                    local cO = {}
+                    cM = tostring(cM or "New Slider")
+                    cz = typeof(cz) == "function" and cz or function()
                         end
-                    cC = typeof(cC) == "table" and cC or {}
-                    cC.min = cC.min or 0
-                    cC.max = cC.max or 100
-                    cC.readonly = cC.readonly or false
-                    local cE = c:FindFirstChild("Slider"):Clone()
-                    local c1 = c0:FindFirstChild("TabScroller")
-                    cE.Parent = c1 or c0
-                    cE.ZIndex = cE.ZIndex + bc * 10
-                    local bi = cE:FindFirstChild("Title")
-                    local cF = cE:FindFirstChild("Indicator")
-                    local cG = cE:FindFirstChild("Value")
+                    cN = typeof(cN) == "table" and cN or {}
+                    cN.min = cN.min or 0
+                    cN.max = cN.max or 100
+                    cN.readonly = cN.readonly or false
+                    local cP = c:FindFirstChild("Slider"):Clone()
+                    local cc = cb:FindFirstChild("TabScroller")
+                    cP.Parent = cc or cb
+                    cP.ZIndex = cP.ZIndex + bc * 10
+                    local bi = cP:FindFirstChild("Title")
+                    local cQ = cP:FindFirstChild("Indicator")
+                    local cR = cP:FindFirstChild("Value")
                     bi.ZIndex = bi.ZIndex + bc * 10
-                    cF.ZIndex = cF.ZIndex + bc * 10
-                    cG.ZIndex = cG.ZIndex + bc * 10
-                    bi.Text = cB
-                    local bz = false
-                    local cH
-                    cE.MouseEnter:Connect(
+                    cQ.ZIndex = cQ.ZIndex + bc * 10
+                    cR.ZIndex = cR.ZIndex + bc * 10
+                    bi.Text = cM
+                    local bK = false
+                    local cS
+                    cP.MouseEnter:Connect(
                         function()
-                            bz = true
+                            bK = true
                             e.Draggable = false
                         end
                     )
-                    cE.MouseLeave:Connect(
+                    cP.MouseLeave:Connect(
                         function()
-                            bz = false
+                            bK = false
                             e.Draggable = true
                         end
                     )
-                    local bA = false
+                    local bL = false
                     al.InputBegan:Connect(
-                        function(bC)
-                            if bC.UserInputType == Enum.UserInputType.MouseButton1 then
-                                bA = true
-                                if bz and not cC.readonly then
-                                    cH =
+                        function(bN)
+                            if bN.UserInputType == Enum.UserInputType.MouseButton1 then
+                                bL = true
+                                if bK and not cN.readonly then
+                                    cS =
                                         an.Heartbeat:Connect(
                                         function()
-                                            if not bA or bk then
-                                                if cH then
-                                                    cH:Disconnect()
-                                                    cH = nil
+                                            if not bL or bk then
+                                                if cS then
+                                                    cS:Disconnect()
+                                                    cS = nil
                                                 end
                                                 return
                                             end
-                                            local bD = b3()
+                                            local bO = b3()
                                             local b6 =
-                                                math.clamp((bD.X - cE.AbsolutePosition.X) / cE.AbsoluteSize.X, 0, 1)
-                                            cF.Size = UDim2.new(b6, 0, 0, 20)
+                                                math.clamp((bO.X - cP.AbsolutePosition.X) / cP.AbsoluteSize.X, 0, 1)
+                                            cQ.Size = UDim2.new(b6, 0, 0, 20)
                                             local ap = math.floor(b6 * 100)
-                                            local cI = cC.max
-                                            local cJ = cC.min
-                                            local cK = cI - cJ
-                                            local cL = math.floor(cK / 100 * ap + cJ)
-                                            cG.Text = tostring(cL)
-                                            pcall(co, cL)
+                                            local cT = cN.max
+                                            local cU = cN.min
+                                            local cV = cT - cU
+                                            local cW = math.floor(cV / 100 * ap + cU)
+                                            cR.Text = tostring(cW)
+                                            pcall(cz, cW)
                                         end
                                     )
                                 end
@@ -1487,50 +1520,50 @@ function bd:AddWindow(bi, bj)
                         end
                     )
                     al.InputEnded:Connect(
-                        function(bC)
-                            if bC.UserInputType == Enum.UserInputType.MouseButton1 then
-                                bA = false
-                                if cH then
-                                    cH:Disconnect()
-                                    cH = nil
+                        function(bN)
+                            if bN.UserInputType == Enum.UserInputType.MouseButton1 then
+                                bL = false
+                                if cS then
+                                    cS:Disconnect()
+                                    cS = nil
                                 end
                             end
                         end
                     )
-                    function cD:Set(cM)
-                        cM = tonumber(cM) or 0
-                        cM = math.clamp(cM, 0, 100) / 100
-                        cF.Size = UDim2.new(cM, 0, 0, 20)
-                        local ap = math.floor(cM * 100)
-                        local cI = cC.max
-                        local cJ = cC.min
-                        local cK = cI - cJ
-                        local cL = math.floor(cK / 100 * ap + cJ)
-                        cG.Text = tostring(cL)
-                        pcall(co, cL)
+                    function cO:Set(cX)
+                        cX = tonumber(cX) or 0
+                        cX = math.clamp(cX, 0, 100) / 100
+                        cQ.Size = UDim2.new(cX, 0, 0, 20)
+                        local ap = math.floor(cX * 100)
+                        local cT = cN.max
+                        local cU = cN.min
+                        local cV = cT - cU
+                        local cW = math.floor(cV / 100 * ap + cU)
+                        cR.Text = tostring(cW)
+                        pcall(cz, cW)
                     end
-                    cD:Set(cC.min)
-                    return cD, cE
+                    cO:Set(cN.min)
+                    return cO, cP
                 end
-                function bU:AddKeybind(cN, co, cO)
-                    local cP = {}
-                    cN = tostring(cN or "New Keybind")
-                    co = typeof(co) == "function" and co or function()
+                function c4:AddKeybind(cY, cz, cZ)
+                    local c_ = {}
+                    cY = tostring(cY or "New Keybind")
+                    cz = typeof(cz) == "function" and cz or function()
                         end
-                    cO = typeof(cO) == "table" and cO or {}
-                    cO.standard = cO.standard or Enum.KeyCode.RightShift
-                    local cQ = c:FindFirstChild("Keybind"):Clone()
-                    local ax = cQ:FindFirstChild("Input")
-                    local bi = cQ:FindFirstChild("Title")
-                    cQ.ZIndex = cQ.ZIndex + bc * 10
+                    cZ = typeof(cZ) == "table" and cZ or {}
+                    cZ.standard = cZ.standard or Enum.KeyCode.RightShift
+                    local d0 = c:FindFirstChild("Keybind"):Clone()
+                    local ax = d0:FindFirstChild("Input")
+                    local bi = d0:FindFirstChild("Title")
+                    d0.ZIndex = d0.ZIndex + bc * 10
                     ax.ZIndex = ax.ZIndex + bc * 10
                     ax:GetChildren()[1].ZIndex = ax:GetChildren()[1].ZIndex + bc * 10
                     bi.ZIndex = bi.ZIndex + bc * 10
-                    local c1 = c0:FindFirstChild("TabScroller")
-                    cQ.Parent = c1 or c0
-                    bi.Text = "  " .. cN
-                    cQ.Size = UDim2.new(0, b1(bi) + 80, 0, 20)
-                    local cR = {
+                    local cc = cb:FindFirstChild("TabScroller")
+                    d0.Parent = cc or cb
+                    bi.Text = "  " .. cY
+                    d0.Size = UDim2.new(0, b1(bi) + 80, 0, 20)
+                    local d1 = {
                         RightControl = "RightCtrl",
                         LeftControl = "LeftCtrl",
                         LeftShift = "LShift",
@@ -1538,14 +1571,14 @@ function bd:AddWindow(bi, bj)
                         MouseButton1 = "Mouse1",
                         MouseButton2 = "Mouse2"
                     }
-                    local cS = cO.standard
-                    function cP:SetKeybind(ag)
-                        local cT = cR[ag.Name] or ag.Name
-                        ax.Text = cT
-                        cS = ag
+                    local d2 = cZ.standard
+                    function c_:SetKeybind(ag)
+                        local d3 = d1[ag.Name] or ag.Name
+                        ax.Text = d3
+                        d2 = ag
                     end
                     al.InputBegan:Connect(
-                        function(cU, aR)
+                        function(d4, aR)
                             if ar.binding then
                                 task.defer(
                                     function()
@@ -1554,12 +1587,12 @@ function bd:AddWindow(bi, bj)
                                 )
                                 return
                             end
-                            if cU.KeyCode == cS and not aR then
-                                pcall(co, cS)
+                            if d4.KeyCode == d2 and not aR then
+                                pcall(cz, d2)
                             end
                         end
                     )
-                    cP:SetKeybind(cO.standard)
+                    c_:SetKeybind(cZ.standard)
                     ax.MouseButton1Click:Connect(
                         function()
                             if ar.binding then
@@ -1567,127 +1600,127 @@ function bd:AddWindow(bi, bj)
                             end
                             ax.Text = "..."
                             ar.binding = true
-                            local cU = al.InputBegan:Wait()
-                            cP:SetKeybind(cU.KeyCode)
+                            local d4 = al.InputBegan:Wait()
+                            c_:SetKeybind(d4.KeyCode)
                         end
                     )
-                    return cP, cQ
+                    return c_, d0
                 end
-                function bU:AddDropdown(cV, co)
-                    local cW = {}
-                    cV = tostring(cV or "New Dropdown")
-                    co = typeof(co) == "function" and co or function()
+                function c4:AddDropdown(d5, cz)
+                    local d6 = {}
+                    d5 = tostring(d5 or "New Dropdown")
+                    cz = typeof(cz) == "function" and cz or function()
                         end
-                    local cX = c:FindFirstChild("Dropdown"):Clone()
-                    local cY = cX:FindFirstChild("Box")
-                    local cZ = cY:FindFirstChild("Objects")
-                    local cF = cX:FindFirstChild("Indicator")
-                    cX.ZIndex = cX.ZIndex + bc * 10
-                    cY.ZIndex = cY.ZIndex + bc * 10
-                    cZ.ZIndex = cZ.ZIndex + bc * 10
-                    cF.ZIndex = cF.ZIndex + bc * 10
-                    cX.Size = UDim2.new(0.5, -5, 0, 20)
-                    local c_ = cX:GetChildren()[3]
-                    c_.ZIndex = c_.ZIndex + bc * 10
-                    c_.ImageTransparency = bj.title_bar_transparency or 0
-                    aH(c_, bj.title_bar, 0)
-                    cY.ImageTransparency = bj.background_transparency or 0.1
-                    aH(cY, bj.background, 0)
-                    local d0 = Instance.new("UICorner")
-                    d0.CornerRadius = UDim.new(0, 6)
-                    d0.Parent = cY
-                    cZ.BackgroundTransparency = 1
-                    cZ.Position = UDim2.new(0, 0, 0, 0)
-                    cZ.Size = UDim2.new(1, 0, 1, 0)
-                    local c1 = c0:FindFirstChild("TabScroller")
-                    cX.Parent = c1 or c0
-                    cX.Text = "      " .. cV
-                    cY.Size = UDim2.new(1, 0, 0, 0)
-                    cY.Position = UDim2.new(0, 0, 0, 25)
-                    cX.TextColor3 = Color3.new(1, 1, 1)
-                    local bF = false
-                    local d1 = false
-                    cX.MouseButton1Click:Connect(
+                    local d7 = c:FindFirstChild("Dropdown"):Clone()
+                    local d8 = d7:FindFirstChild("Box")
+                    local d9 = d8:FindFirstChild("Objects")
+                    local cQ = d7:FindFirstChild("Indicator")
+                    d7.ZIndex = d7.ZIndex + bc * 10
+                    d8.ZIndex = d8.ZIndex + bc * 10
+                    d9.ZIndex = d9.ZIndex + bc * 10
+                    cQ.ZIndex = cQ.ZIndex + bc * 10
+                    d7.Size = UDim2.new(0.5, -5, 0, 20)
+                    local da = d7:GetChildren()[3]
+                    da.ZIndex = da.ZIndex + bc * 10
+                    da.ImageTransparency = bj.title_bar_transparency or 0
+                    aH(da, bj.title_bar, 0)
+                    d8.ImageTransparency = bj.background_transparency or 0.1
+                    aH(d8, bj.background, 0)
+                    local db = Instance.new("UICorner")
+                    db.CornerRadius = UDim.new(0, 6)
+                    db.Parent = d8
+                    d9.BackgroundTransparency = 1
+                    d9.Position = UDim2.new(0, 0, 0, 0)
+                    d9.Size = UDim2.new(1, 0, 1, 0)
+                    local cc = cb:FindFirstChild("TabScroller")
+                    d7.Parent = cc or cb
+                    d7.Text = "      " .. d5
+                    d8.Size = UDim2.new(1, 0, 0, 0)
+                    d8.Position = UDim2.new(0, 0, 0, 25)
+                    d7.TextColor3 = Color3.new(1, 1, 1)
+                    local bQ = false
+                    local dc = false
+                    d7.MouseButton1Click:Connect(
                         function()
-                            bF = not bF
-                            local d2 = math.min((#cZ:GetChildren() - 1) * 20, 200)
-                            if #cZ:GetChildren() - 1 >= 10 then
-                                cZ.CanvasSize = UDim2.new(0, 0, (#cZ:GetChildren() - 1) * 0.1, 0)
+                            bQ = not bQ
+                            local dd = math.min((#d9:GetChildren() - 1) * 20, 200)
+                            if #d9:GetChildren() - 1 >= 10 then
+                                d9.CanvasSize = UDim2.new(0, 0, (#d9:GetChildren() - 1) * 0.1, 0)
                             end
-                            if bF then
+                            if bQ then
                                 if bk then
                                     return
                                 end
                                 bk = true
-                                local d3 = cX.AbsolutePosition.Y
-                                local d4 = cX.AbsoluteSize.Y
-                                local d5 = e.AbsolutePosition.Y + e.AbsoluteSize.Y
-                                local d6 = d5 - (d3 + d4)
-                                if d6 < d2 then
-                                    d1 = true
-                                    cY.Position = UDim2.new(0, 0, 0, -d2 - 5)
-                                    cY.Size = UDim2.new(1, 0, 0, 0)
+                                local de = d7.AbsolutePosition.Y
+                                local df = d7.AbsoluteSize.Y
+                                local dg = e.AbsolutePosition.Y + e.AbsoluteSize.Y
+                                local dh = dg - (de + df)
+                                if dh < dd then
+                                    dc = true
+                                    d8.Position = UDim2.new(0, 0, 0, -dd - 5)
+                                    d8.Size = UDim2.new(1, 0, 0, 0)
                                     local aF =
                                         TweenInfo.new(bj.tween_time, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
                                     local aG =
                                         am:Create(
-                                        cY,
+                                        d8,
                                         aF,
-                                        {Size = UDim2.new(1, 0, 0, d2), Position = UDim2.new(0, 0, 0, -d2 - 5)}
+                                        {Size = UDim2.new(1, 0, 0, dd), Position = UDim2.new(0, 0, 0, -dd - 5)}
                                     )
                                     aG:Play()
-                                    az(cF, {Rotation = -90}, bj.tween_time)
+                                    az(cQ, {Rotation = -90}, bj.tween_time)
                                 else
-                                    d1 = false
-                                    cY.Position = UDim2.new(0, 0, 0, 25)
-                                    cY.Size = UDim2.new(1, 0, 0, 0)
-                                    az(cY, {Size = UDim2.new(1, 0, 0, d2)}, bj.tween_time)
-                                    az(cF, {Rotation = 90}, bj.tween_time)
+                                    dc = false
+                                    d8.Position = UDim2.new(0, 0, 0, 25)
+                                    d8.Size = UDim2.new(1, 0, 0, 0)
+                                    az(d8, {Size = UDim2.new(1, 0, 0, dd)}, bj.tween_time)
+                                    az(cQ, {Rotation = 90}, bj.tween_time)
                                 end
                             else
                                 bk = false
-                                if d1 then
+                                if dc then
                                     local aF =
                                         TweenInfo.new(bj.tween_time, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
                                     local aG =
                                         am:Create(
-                                        cY,
+                                        d8,
                                         aF,
                                         {Size = UDim2.new(1, 0, 0, 0), Position = UDim2.new(0, 0, 0, -5)}
                                     )
                                     aG:Play()
                                     aG.Completed:Connect(
                                         function()
-                                            cY.Position = UDim2.new(0, 0, 0, 25)
+                                            d8.Position = UDim2.new(0, 0, 0, 25)
                                         end
                                     )
                                 else
-                                    az(cY, {Size = UDim2.new(1, 0, 0, 0)}, bj.tween_time)
+                                    az(d8, {Size = UDim2.new(1, 0, 0, 0)}, bj.tween_time)
                                 end
-                                az(cF, {Rotation = -90}, bj.tween_time)
+                                az(cQ, {Rotation = -90}, bj.tween_time)
                             end
                         end
                     )
-                    function cW:Add(d7)
-                        local d8 = {}
-                        d7 = tostring(d7 or "New Object")
+                    function d6:Add(di)
+                        local dj = {}
+                        di = tostring(di or "New Object")
                         local aZ = c:FindFirstChild("DropdownButton"):Clone()
-                        aZ.Parent = cZ
-                        aZ.Text = "      " .. d7
+                        aZ.Parent = d9
+                        aZ.Text = "      " .. di
                         aZ.ZIndex = aZ.ZIndex + bc * 10 + 5
                         aZ.BackgroundTransparency = 1
                         aZ.TextColor3 = Color3.new(1, 1, 1)
                         aZ.BorderSizePixel = 0
                         aZ.TextXAlignment = Enum.TextXAlignment.Left
-                        local d9 = aZ:FindFirstChildOfClass("UICorner")
-                        if d9 then
-                            d9:Destroy()
+                        local dk = aZ:FindFirstChildOfClass("UICorner")
+                        if dk then
+                            dk:Destroy()
                         end
-                        local bY = Instance.new("UIStroke")
-                        bY.Color = Color3.new(0, 0, 0)
-                        bY.Thickness = 1
-                        bY.Transparency = 0.3
-                        bY.Parent = aZ
+                        local c8 = Instance.new("UIStroke")
+                        c8.Color = Color3.new(0, 0, 0)
+                        c8.Thickness = 1
+                        c8.Transparency = 0.3
+                        c8.Parent = aZ
                         aZ.MouseEnter:Connect(
                             function()
                                 aZ.BackgroundTransparency = 0.8
@@ -1699,31 +1732,31 @@ function bd:AddWindow(bi, bj)
                                 aZ.BackgroundTransparency = 1
                             end
                         )
-                        if bF then
-                            local d2 = math.min((#cZ:GetChildren() - 1) * 20, 200)
-                            if #cZ:GetChildren() - 1 >= 10 then
-                                cZ.CanvasSize = UDim2.new(0, 0, (#cZ:GetChildren() - 1) * 0.1, 0)
+                        if bQ then
+                            local dd = math.min((#d9:GetChildren() - 1) * 20, 200)
+                            if #d9:GetChildren() - 1 >= 10 then
+                                d9.CanvasSize = UDim2.new(0, 0, (#d9:GetChildren() - 1) * 0.1, 0)
                             end
-                            if d1 then
+                            if dc then
                                 local aF = TweenInfo.new(bj.tween_time, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
                                 local aG =
                                     am:Create(
-                                    cY,
+                                    d8,
                                     aF,
-                                    {Size = UDim2.new(1, 0, 0, d2), Position = UDim2.new(0, 0, 0, -d2 - 5)}
+                                    {Size = UDim2.new(1, 0, 0, dd), Position = UDim2.new(0, 0, 0, -dd - 5)}
                                 )
                                 aG:Play()
                             else
-                                az(cY, {Size = UDim2.new(1, 0, 0, d2)}, bj.tween_time)
+                                az(d8, {Size = UDim2.new(1, 0, 0, dd)}, bj.tween_time)
                             end
                         end
                         aZ.MouseButton1Click:Connect(
                             function()
                                 if bk then
-                                    cX.Text = "      [ " .. d7 .. " ]"
+                                    d7.Text = "      [ " .. di .. " ]"
                                     bk = false
-                                    bF = false
-                                    if d1 then
+                                    bQ = false
+                                    if dc then
                                         local aF =
                                             TweenInfo.new(
                                             bj.tween_time,
@@ -1732,131 +1765,131 @@ function bd:AddWindow(bi, bj)
                                         )
                                         local aG =
                                             am:Create(
-                                            cY,
+                                            d8,
                                             aF,
                                             {Size = UDim2.new(1, 0, 0, 0), Position = UDim2.new(0, 0, 0, -5)}
                                         )
                                         aG:Play()
                                         aG.Completed:Connect(
                                             function()
-                                                cY.Position = UDim2.new(0, 0, 0, 25)
+                                                d8.Position = UDim2.new(0, 0, 0, 25)
                                             end
                                         )
                                     else
-                                        az(cY, {Size = UDim2.new(1, 0, 0, 0)}, bj.tween_time)
+                                        az(d8, {Size = UDim2.new(1, 0, 0, 0)}, bj.tween_time)
                                     end
-                                    az(cF, {Rotation = -90}, bj.tween_time)
-                                    pcall(co, d7)
+                                    az(cQ, {Rotation = -90}, bj.tween_time)
+                                    pcall(cz, di)
                                 end
                             end
                         )
-                        function d8:Remove()
+                        function dj:Remove()
                             aZ:Destroy()
                         end
-                        return aZ, d8
+                        return aZ, dj
                     end
-                    function cW:Remove(da)
-                        local db = cZ:FindFirstChild(da)
-                        if db then
-                            db:Destroy()
-                            if cW.currentSelection == da then
-                                local dc = cZ:GetChildren()[1]
-                                local dd = dc and dc.Text or "No Selection"
-                                cW.currentSelection = dd
-                                cX.Text = "        [ " .. dd .. " ]"
-                                pcall(co, dd)
+                    function d6:Remove(dl)
+                        local dm = d9:FindFirstChild(dl)
+                        if dm then
+                            dm:Destroy()
+                            if d6.currentSelection == dl then
+                                local dn = d9:GetChildren()[1]
+                                local dp = dn and dn.Text or "No Selection"
+                                d6.currentSelection = dp
+                                d7.Text = "        [ " .. dp .. " ]"
+                                pcall(cz, dp)
                             end
                         end
                     end
-                    return cW, cX
+                    return d6, d7
                 end
-                function bU:AddColorPicker(co)
-                    local de = {}
-                    co = typeof(co) == "function" and co or function()
+                function c4:AddColorPicker(cz)
+                    local dq = {}
+                    cz = typeof(cz) == "function" and cz or function()
                         end
-                    local df = c:FindFirstChild("ColorPicker"):Clone()
-                    local c1 = c0:FindFirstChild("TabScroller")
-                    df.Parent = c1 or c0
-                    df.ZIndex = df.ZIndex + bc * 10
-                    local dg = df:FindFirstChild("Palette")
-                    local dh = df:FindFirstChild("Sample")
-                    local di = df:FindFirstChild("Saturation")
-                    dg.ZIndex = dg.ZIndex + bc * 10
-                    dh.ZIndex = dh.ZIndex + bc * 10
-                    di.ZIndex = di.ZIndex + bc * 10
+                    local dr = c:FindFirstChild("ColorPicker"):Clone()
+                    local cc = cb:FindFirstChild("TabScroller")
+                    dr.Parent = cc or cb
+                    dr.ZIndex = dr.ZIndex + bc * 10
+                    local ds = dr:FindFirstChild("Palette")
+                    local dt = dr:FindFirstChild("Sample")
+                    local du = dr:FindFirstChild("Saturation")
+                    ds.ZIndex = ds.ZIndex + bc * 10
+                    dt.ZIndex = dt.ZIndex + bc * 10
+                    du.ZIndex = du.ZIndex + bc * 10
                     local aU, aV, aW = 0, 1, 1
-                    local function dj()
-                        local dk = Color3.fromHSV(aU, aV, aW)
-                        dh.ImageColor3 = dk
-                        di.ImageColor3 = Color3.fromHSV(aU, 1, 1)
-                        pcall(co, dk)
+                    local function dv()
+                        local dw = Color3.fromHSV(aU, aV, aW)
+                        dt.ImageColor3 = dw
+                        du.ImageColor3 = Color3.fromHSV(aU, 1, 1)
+                        pcall(cz, dw)
                     end
-                    local dk = Color3.fromHSV(aU, aV, aW)
-                    dh.ImageColor3 = dk
-                    di.ImageColor3 = Color3.fromHSV(aU, 1, 1)
-                    local dl, dm = false, false
-                    dg.MouseEnter:Connect(
+                    local dw = Color3.fromHSV(aU, aV, aW)
+                    dt.ImageColor3 = dw
+                    du.ImageColor3 = Color3.fromHSV(aU, 1, 1)
+                    local dx, dy = false, false
+                    ds.MouseEnter:Connect(
                         function()
                             e.Draggable = false
-                            dl = true
+                            dx = true
                         end
                     )
-                    dg.MouseLeave:Connect(
+                    ds.MouseLeave:Connect(
                         function()
                             e.Draggable = true
-                            dl = false
+                            dx = false
                         end
                     )
-                    di.MouseEnter:Connect(
+                    du.MouseEnter:Connect(
                         function()
                             e.Draggable = false
-                            dm = true
+                            dy = true
                         end
                     )
-                    di.MouseLeave:Connect(
+                    du.MouseLeave:Connect(
                         function()
                             e.Draggable = true
-                            dm = false
+                            dy = false
                         end
                     )
-                    local dn = dg:FindFirstChild("Indicator")
-                    local dp = di:FindFirstChild("Indicator")
-                    dn.ZIndex = dn.ZIndex + bc * 10
-                    dp.ZIndex = dp.ZIndex + bc * 10
-                    local bA = false
-                    local dq
+                    local dz = ds:FindFirstChild("Indicator")
+                    local dA = du:FindFirstChild("Indicator")
+                    dz.ZIndex = dz.ZIndex + bc * 10
+                    dA.ZIndex = dA.ZIndex + bc * 10
+                    local bL = false
+                    local dB
                     al.InputBegan:Connect(
-                        function(bC)
-                            if bC.UserInputType == Enum.UserInputType.MouseButton1 then
-                                bA = true
-                                dq =
+                        function(bN)
+                            if bN.UserInputType == Enum.UserInputType.MouseButton1 then
+                                bL = true
+                                dB =
                                     an.Heartbeat:Connect(
                                     function()
-                                        if not bA or bk then
-                                            if dq then
-                                                dq:Disconnect()
-                                                dq = nil
+                                        if not bL or bk then
+                                            if dB then
+                                                dB:Disconnect()
+                                                dB = nil
                                             end
                                             return
                                         end
-                                        if dl then
-                                            local bD = b3()
+                                        if dx then
+                                            local bO = b3()
                                             local b6 =
-                                                math.clamp((bD.X - dg.AbsolutePosition.X) / dg.AbsoluteSize.X, 0, 1)
+                                                math.clamp((bO.X - ds.AbsolutePosition.X) / ds.AbsoluteSize.X, 0, 1)
                                             local b7 =
-                                                math.clamp((bD.Y - dg.AbsolutePosition.Y) / dg.AbsoluteSize.Y, 0, 1)
+                                                math.clamp((bO.Y - ds.AbsolutePosition.Y) / ds.AbsoluteSize.Y, 0, 1)
                                             aU = b6
                                             aV = 1 - b7
-                                            dn.Position =
-                                                UDim2.new(b6, -dn.AbsoluteSize.X / 2, b7, -dn.AbsoluteSize.Y / 2)
-                                            dj()
-                                        elseif dm then
-                                            local bD = b3()
+                                            dz.Position =
+                                                UDim2.new(b6, -dz.AbsoluteSize.X / 2, b7, -dz.AbsoluteSize.Y / 2)
+                                            dv()
+                                        elseif dy then
+                                            local bO = b3()
                                             local b7 =
-                                                math.clamp((bD.Y - di.AbsolutePosition.Y) / di.AbsoluteSize.Y, 0, 1)
+                                                math.clamp((bO.Y - du.AbsolutePosition.Y) / du.AbsoluteSize.Y, 0, 1)
                                             aW = 1 - b7
-                                            dp.Position = UDim2.new(0, 0, b7, 0)
-                                            dj()
+                                            dA.Position = UDim2.new(0, 0, b7, 0)
+                                            dv()
                                         end
                                     end
                                 )
@@ -1864,111 +1897,111 @@ function bd:AddWindow(bi, bj)
                         end
                     )
                     al.InputEnded:Connect(
-                        function(bC)
-                            if bC.UserInputType == Enum.UserInputType.MouseButton1 then
-                                bA = false
-                                if dq then
-                                    dq:Disconnect()
-                                    dq = nil
+                        function(bN)
+                            if bN.UserInputType == Enum.UserInputType.MouseButton1 then
+                                bL = false
+                                if dB then
+                                    dB:Disconnect()
+                                    dB = nil
                                 end
                             end
                         end
                     )
-                    function de:Set(dk)
-                        dk = typeof(dk) == "Color3" and dk or Color3.new(1, 1, 1)
-                        local dr, ds, dt = aO(dk.r * 255, dk.g * 255, dk.b * 255)
-                        dh.ImageColor3 = dk
-                        di.ImageColor3 = Color3.fromHSV(dr, 1, 1)
-                        pcall(co, dk)
+                    function dq:Set(dw)
+                        dw = typeof(dw) == "Color3" and dw or Color3.new(1, 1, 1)
+                        local dC, dD, dE = aO(dw.r * 255, dw.g * 255, dw.b * 255)
+                        dt.ImageColor3 = dw
+                        du.ImageColor3 = Color3.fromHSV(dC, 1, 1)
+                        pcall(cz, dw)
                     end
-                    return de, df
+                    return dq, dr
                 end
-                function bU:AddHorizontalAlignment()
-                    local du = {}
-                    local dv = c:FindFirstChild("HorizontalAlignment"):Clone()
-                    local c1 = c0:FindFirstChild("TabScroller")
-                    dv.Parent = c1 or c0
-                    function du:AddButton(...)
-                        local dw = {bU:AddButton(...)}
-                        local aZ = dw[#dw]
-                        aZ.Parent = dv
-                        return table.unpack(dw)
+                function c4:AddHorizontalAlignment()
+                    local dF = {}
+                    local dG = c:FindFirstChild("HorizontalAlignment"):Clone()
+                    local cc = cb:FindFirstChild("TabScroller")
+                    dG.Parent = cc or cb
+                    function dF:AddButton(...)
+                        local dH = {c4:AddButton(...)}
+                        local aZ = dH[#dH]
+                        aZ.Parent = dG
+                        return table.unpack(dH)
                     end
-                    return du, dv
+                    return dF, dG
                 end
-                function bU:AddFolder(dx)
-                    local dy = {}
-                    dx = tostring(dx or "New Folder")
-                    local dz = c:FindFirstChild("Folder"):Clone()
-                    local b5 = dz:FindFirstChild("Button")
-                    local cZ = dz:FindFirstChild("Objects")
-                    local dA = b5:FindFirstChild("Toggle")
-                    dz.ZIndex = dz.ZIndex + bc * 10
+                function c4:AddFolder(dI)
+                    local dJ = {}
+                    dI = tostring(dI or "New Folder")
+                    local dK = c:FindFirstChild("Folder"):Clone()
+                    local b5 = dK:FindFirstChild("Button")
+                    local d9 = dK:FindFirstChild("Objects")
+                    local dL = b5:FindFirstChild("Toggle")
+                    dK.ZIndex = dK.ZIndex + bc * 10
                     b5.ZIndex = b5.ZIndex + bc * 10
-                    cZ.ZIndex = cZ.ZIndex + bc * 10
-                    dA.ZIndex = dA.ZIndex + bc * 10
+                    d9.ZIndex = d9.ZIndex + bc * 10
+                    dL.ZIndex = dL.ZIndex + bc * 10
                     b5:GetChildren()[1].ZIndex = b5:GetChildren()[1].ZIndex + bc * 10
-                    local c1 = c0:FindFirstChild("TabScroller")
-                    dz.Parent = c1 or c0
-                    b5.Text = "      " .. dx
-                    local cp = b5:GetChildren()[1]
-                    cp.ImageColor3 = bj.main_color
-                    local function dB()
-                        local d7 = 25
-                        for aw, aW in ipairs(cZ:GetChildren()) do
+                    local cc = cb:FindFirstChild("TabScroller")
+                    dK.Parent = cc or cb
+                    b5.Text = "      " .. dI
+                    local cA = b5:GetChildren()[1]
+                    cA.ImageColor3 = bj.main_color
+                    local function dM()
+                        local di = 25
+                        for aw, aW in ipairs(d9:GetChildren()) do
                             if not aW:IsA("UIListLayout") then
-                                d7 = d7 + aW.AbsoluteSize.Y + 5
+                                di = di + aW.AbsoluteSize.Y + 5
                             end
                         end
-                        return d7
+                        return di
                     end
-                    local bF = false
-                    local dC
+                    local bQ = false
+                    local dN
                     b5.MouseButton1Click:Connect(
                         function()
-                            bF = not bF
-                            if bF then
-                                az(dA, {Rotation = 90}, bj.tween_time)
-                                cZ.Visible = true
-                                if dC then
-                                    dC:Disconnect()
+                            bQ = not bQ
+                            if bQ then
+                                az(dL, {Rotation = 90}, bj.tween_time)
+                                d9.Visible = true
+                                if dN then
+                                    dN:Disconnect()
                                 end
-                                dC =
+                                dN =
                                     an.Heartbeat:Connect(
                                     function()
-                                        if bF then
-                                            dz.Size = UDim2.new(1, 0, 0, dB())
+                                        if bQ then
+                                            dK.Size = UDim2.new(1, 0, 0, dM())
                                         else
-                                            if dC then
-                                                dC:Disconnect()
-                                                dC = nil
+                                            if dN then
+                                                dN:Disconnect()
+                                                dN = nil
                                             end
                                         end
                                     end
                                 )
                             else
-                                az(dA, {Rotation = 0}, bj.tween_time)
-                                cZ.Visible = false
-                                dz.Size = UDim2.new(1, 0, 0, 20)
-                                if dC then
-                                    dC:Disconnect()
-                                    dC = nil
+                                az(dL, {Rotation = 0}, bj.tween_time)
+                                d9.Visible = false
+                                dK.Size = UDim2.new(1, 0, 0, 20)
+                                if dN then
+                                    dN:Disconnect()
+                                    dN = nil
                                 end
                             end
                         end
                     )
-                    for bh, aW in pairs(bU) do
-                        dy[bh] = function(...)
-                            local dw = {aW(...)}
-                            local aZ = dw[#dw]
-                            aZ.Parent = cZ
-                            return table.unpack(dw)
+                    for bh, aW in pairs(c4) do
+                        dJ[bh] = function(...)
+                            local dH = {aW(...)}
+                            local aZ = dH[#dH]
+                            aZ.Parent = d9
+                            return table.unpack(dH)
                         end
                     end
-                    return dy, dz
+                    return dJ, dK
                 end
             end
-            return bU, c0
+            return c4, cb
         end
     end
     for aw, aW in ipairs(e:GetDescendants()) do
@@ -1976,7 +2009,7 @@ function bd:AddWindow(bi, bj)
             aW.ZIndex = aW.ZIndex + bc * 10
         end
     end
-    return bx, e
+    return bI, e
 end
 script.AncestryChanged:Connect(
     function()
