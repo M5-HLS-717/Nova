@@ -1623,48 +1623,73 @@ function bd:AddWindow(bi, bj)
                                 local d4 = cX.AbsoluteSize.Y
                                 local d5 = e.AbsolutePosition.Y + e.AbsoluteSize.Y
                                 local d6 = d5 - (d3 + d4)
-                                if d6 < d2 then
-                                    d1 = true
-                                    cY.Position = UDim2.new(0, 0, 0, -d2 - 5)
-                                    cY.Size = UDim2.new(1, 0, 0, 0)
-                                    local aF =
-                                        TweenInfo.new(bj.tween_time, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-                                    local aG =
-                                        am:Create(
-                                        cY,
-                                        aF,
-                                        {Size = UDim2.new(1, 0, 0, d2), Position = UDim2.new(0, 0, 0, -d2 - 5)}
-                                    )
-                                    aG:Play()
-                                    az(cF, {Rotation = -90}, bj.tween_time)
-                                else
-                                    d1 = false
-                                    cY.Position = UDim2.new(0, 0, 0, 25)
-                                    cY.Size = UDim2.new(1, 0, 0, 0)
-                                    az(cY, {Size = UDim2.new(1, 0, 0, d2)}, bj.tween_time)
-                                    az(cF, {Rotation = 90}, bj.tween_time)
+                                
+                                -- HER ZAMAN AŞAĞI AÇILACAK ŞEKİLDE DEĞİŞTİRİLDİ
+                                d1 = false
+                                cY.Position = UDim2.new(0, 0, 0, 25)
+                                cY.Size = UDim2.new(1, 0, 0, 0)
+                                
+                                -- Dropdown animasyon efekti ekleme
+                                local d7 = Instance.new("Frame")
+                                d7.Name = "DropdownEffect"
+                                d7.BackgroundColor3 = bj.main_color
+                                d7.BackgroundTransparency = 0.7
+                                d7.Size = UDim2.new(0, 0, 0, 2)
+                                d7.Position = UDim2.new(0.5, 0, 0, 0)
+                                d7.AnchorPoint = Vector2.new(0.5, 0)
+                                d7.ZIndex = cY.ZIndex + 5
+                                d7.Parent = cY
+                                
+                                local d8 = Instance.new("UICorner")
+                                d8.CornerRadius = UDim.new(1, 0)
+                                d8.Parent = d7
+                                
+                                az(cY, {Size = UDim2.new(1, 0, 0, d2)}, bj.tween_time)
+                                az(cF, {Rotation = 90}, bj.tween_time)
+                                
+                                -- Efekt animasyonu
+                                az(d7, {Size = UDim2.new(1, 0, 0, 2), BackgroundTransparency = 0.9}, 0.3)
+                                task.wait(0.3)
+                                d7:Destroy()
+                                
+                                -- Dropdown öğelerine hover efekti ekle
+                                for aw, aZ in ipairs(cZ:GetChildren()) do
+                                    if aZ:IsA("TextButton") then
+                                        aZ.MouseEnter:Connect(function()
+                                            az(aZ, {BackgroundTransparency = 0.8, BackgroundColor3 = bj.main_color}, 0.2)
+                                            az(aZ:FindFirstChildOfClass("UIStroke"), {Thickness = 1.5}, 0.2)
+                                        end)
+                                        aZ.MouseLeave:Connect(function()
+                                            az(aZ, {BackgroundTransparency = 1}, 0.2)
+                                            az(aZ:FindFirstChildOfClass("UIStroke"), {Thickness = 1}, 0.2)
+                                        end)
+                                    end
                                 end
                             else
                                 bk = false
-                                if d1 then
-                                    local aF =
-                                        TweenInfo.new(bj.tween_time, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-                                    local aG =
-                                        am:Create(
-                                        cY,
-                                        aF,
-                                        {Size = UDim2.new(1, 0, 0, 0), Position = UDim2.new(0, 0, 0, -5)}
-                                    )
-                                    aG:Play()
-                                    aG.Completed:Connect(
-                                        function()
-                                            cY.Position = UDim2.new(0, 0, 0, 25)
-                                        end
-                                    )
-                                else
-                                    az(cY, {Size = UDim2.new(1, 0, 0, 0)}, bj.tween_time)
-                                end
+                                
+                                -- Kapanma efekti
+                                local d9 = Instance.new("Frame")
+                                d9.Name = "DropdownCloseEffect"
+                                d9.BackgroundColor3 = bj.main_color
+                                d9.BackgroundTransparency = 0.7
+                                d9.Size = UDim2.new(1, 0, 0, 2)
+                                d9.Position = UDim2.new(0, 0, 0, 0)
+                                d9.ZIndex = cY.ZIndex + 5
+                                d9.Parent = cY
+                                
+                                local da = Instance.new("UICorner")
+                                da.CornerRadius = UDim.new(1, 0)
+                                da.Parent = d9
+                                
+                                az(d9, {Size = UDim2.new(0, 0, 0, 2), Position = UDim2.new(0.5, 0, 0, 0)}, 0.3)
+                                az(cY, {Size = UDim2.new(1, 0, 0, 0)}, bj.tween_time)
                                 az(cF, {Rotation = -90}, bj.tween_time)
+                                
+                                task.wait(bj.tween_time)
+                                if d9 and d9.Parent then
+                                    d9:Destroy()
+                                end
                             end
                         end
                     )
@@ -1688,15 +1713,18 @@ function bd:AddWindow(bi, bj)
                         bY.Thickness = 1
                         bY.Transparency = 0.3
                         bY.Parent = aZ
+                        
+                        -- Hover efekti
                         aZ.MouseEnter:Connect(
                             function()
-                                aZ.BackgroundTransparency = 0.8
-                                aZ.BackgroundColor3 = bj.main_color
+                                az(aZ, {BackgroundTransparency = 0.8, BackgroundColor3 = bj.main_color}, 0.2)
+                                az(bY, {Thickness = 1.5}, 0.2)
                             end
                         )
                         aZ.MouseLeave:Connect(
                             function()
-                                aZ.BackgroundTransparency = 1
+                                az(aZ, {BackgroundTransparency = 1}, 0.2)
+                                az(bY, {Thickness = 1}, 0.2)
                             end
                         )
                         if bF then
@@ -1704,48 +1732,54 @@ function bd:AddWindow(bi, bj)
                             if #cZ:GetChildren() - 1 >= 10 then
                                 cZ.CanvasSize = UDim2.new(0, 0, (#cZ:GetChildren() - 1) * 0.1, 0)
                             end
-                            if d1 then
-                                local aF = TweenInfo.new(bj.tween_time, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-                                local aG =
-                                    am:Create(
-                                    cY,
-                                    aF,
-                                    {Size = UDim2.new(1, 0, 0, d2), Position = UDim2.new(0, 0, 0, -d2 - 5)}
-                                )
-                                aG:Play()
-                            else
-                                az(cY, {Size = UDim2.new(1, 0, 0, d2)}, bj.tween_time)
-                            end
+                            az(cY, {Size = UDim2.new(1, 0, 0, d2)}, bj.tween_time)
                         end
                         aZ.MouseButton1Click:Connect(
                             function()
                                 if bk then
+                                    -- Seçim efekti
+                                    local db = Instance.new("Frame")
+                                    db.Name = "SelectionEffect"
+                                    db.BackgroundColor3 = bj.main_color
+                                    db.BackgroundTransparency = 0.7
+                                    db.Size = UDim2.new(0, 0, 1, 0)
+                                    db.Position = UDim2.new(0, 0, 0, 0)
+                                    db.ZIndex = aZ.ZIndex - 1
+                                    db.Parent = aZ
+                                    
+                                    az(db, {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 0.9}, 0.2)
+                                    
                                     cX.Text = "      [ " .. d7 .. " ]"
                                     bk = false
                                     bF = false
-                                    if d1 then
-                                        local aF =
-                                            TweenInfo.new(
-                                            bj.tween_time,
-                                            Enum.EasingStyle.Quad,
-                                            Enum.EasingDirection.Out
-                                        )
-                                        local aG =
-                                            am:Create(
-                                            cY,
-                                            aF,
-                                            {Size = UDim2.new(1, 0, 0, 0), Position = UDim2.new(0, 0, 0, -5)}
-                                        )
-                                        aG:Play()
-                                        aG.Completed:Connect(
-                                            function()
-                                                cY.Position = UDim2.new(0, 0, 0, 25)
-                                            end
-                                        )
-                                    else
-                                        az(cY, {Size = UDim2.new(1, 0, 0, 0)}, bj.tween_time)
-                                    end
+                                    
+                                    -- Kapanma efekti
+                                    local dc = Instance.new("Frame")
+                                    dc.Name = "DropdownCloseEffect"
+                                    dc.BackgroundColor3 = bj.main_color
+                                    dc.BackgroundTransparency = 0.7
+                                    dc.Size = UDim2.new(1, 0, 0, 2)
+                                    dc.Position = UDim2.new(0, 0, 0, 0)
+                                    dc.ZIndex = cY.ZIndex + 5
+                                    dc.Parent = cY
+                                    
+                                    local dd = Instance.new("UICorner")
+                                    dd.CornerRadius = UDim.new(1, 0)
+                                    dd.Parent = dc
+                                    
+                                    az(dc, {Size = UDim2.new(0, 0, 0, 2), Position = UDim2.new(0.5, 0, 0, 0)}, 0.3)
+                                    az(cY, {Size = UDim2.new(1, 0, 0, 0)}, bj.tween_time)
                                     az(cF, {Rotation = -90}, bj.tween_time)
+                                    
+                                    task.wait(0.3)
+                                    if db and db.Parent then
+                                        db:Destroy()
+                                    end
+                                    task.wait(bj.tween_time)
+                                    if dc and dc.Parent then
+                                        dc:Destroy()
+                                    end
+                                    
                                     pcall(co, d7)
                                 end
                             end
@@ -1928,8 +1962,26 @@ function bd:AddWindow(bi, bj)
                         function()
                             bF = not bF
                             if bF then
+                                -- Açılma efekti
+                                local dD = Instance.new("Frame")
+                                dD.Name = "FolderOpenEffect"
+                                dD.BackgroundColor3 = bj.main_color
+                                dD.BackgroundTransparency = 0.8
+                                dD.Size = UDim2.new(0, 2, 0, 0)
+                                dD.Position = UDim2.new(0, 0, 0, 0)
+                                dD.ZIndex = cZ.ZIndex + 5
+                                dD.Parent = dz
+                                
                                 az(dA, {Rotation = 90}, bj.tween_time)
                                 cZ.Visible = true
+                                
+                                -- Efekt animasyonu
+                                az(dD, {Size = UDim2.new(0, 2, 0, dB())}, 0.3)
+                                task.wait(0.3)
+                                if dD and dD.Parent then
+                                    dD:Destroy()
+                                end
+                                
                                 if dC then
                                     dC:Disconnect()
                                 end
@@ -1947,7 +1999,24 @@ function bd:AddWindow(bi, bj)
                                     end
                                 )
                             else
+                                -- Kapanma efekti
+                                local dE = Instance.new("Frame")
+                                dE.Name = "FolderCloseEffect"
+                                dE.BackgroundColor3 = bj.main_color
+                                dE.BackgroundTransparency = 0.8
+                                dE.Size = UDim2.new(0, 2, 0, dB())
+                                dE.Position = UDim2.new(0, 0, 0, 0)
+                                dE.ZIndex = cZ.ZIndex + 5
+                                dE.Parent = dz
+                                
+                                az(dE, {Size = UDim2.new(0, 2, 0, 0)}, 0.3)
                                 az(dA, {Rotation = 0}, bj.tween_time)
+                                
+                                task.wait(0.3)
+                                if dE and dE.Parent then
+                                    dE:Destroy()
+                                end
+                                
                                 cZ.Visible = false
                                 dz.Size = UDim2.new(1, 0, 0, 20)
                                 if dC then
