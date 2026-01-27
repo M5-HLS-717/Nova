@@ -1,1 +1,159 @@
-print("The new one will come later") 
+local coreGui = game:GetService("CoreGui")
+if coreGui:FindFirstChild("Nova_AntiAFK") then
+    coreGui.Nova_AntiAFK:Destroy()
+end
+
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local VirtualUser = game:GetService("VirtualUser")
+local StatsService = game:GetService("Stats")
+local StarterGui = game:GetService("StarterGui")
+local Lighting = game:GetService("Lighting")
+
+local startTime = os.time()
+local LocalPlayer = Players.LocalPlayer
+local fpsBoostActive = false
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "Nova_AntiAFK"
+screenGui.Parent = coreGui
+screenGui.ResetOnSpawn = false
+
+local mainFrame = Instance.new("Frame")
+mainFrame.Name = "MainFrame"
+mainFrame.Parent = screenGui
+mainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+mainFrame.BackgroundTransparency = 0.2
+mainFrame.Position = UDim2.new(0.5, -110, 0, 10)
+mainFrame.Size = UDim2.new(0, 220, 0, 85)
+mainFrame.BorderSizePixel = 0
+mainFrame.Active = true
+mainFrame.Draggable = true
+
+local uiCorner = Instance.new("UICorner")
+uiCorner.CornerRadius = UDim.new(0, 8)
+uiCorner.Parent = mainFrame
+
+local uiStroke = Instance.new("UIStroke")
+uiStroke.Parent = mainFrame
+uiStroke.Color = Color3.fromRGB(80, 80, 120)
+uiStroke.Thickness = 1.5
+
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Name = "Title"
+titleLabel.Parent = mainFrame
+titleLabel.Size = UDim2.new(1, 0, 0.3, 0)
+titleLabel.BackgroundTransparency = 1
+titleLabel.Font = Enum.Font.GothamBlack
+titleLabel.TextSize = 14
+titleLabel.TextColor3 = Color3.fromRGB(130, 130, 255)
+titleLabel.Text = "NOVA ANTI AFK"
+
+local statsLabel = Instance.new("TextLabel")
+statsLabel.Name = "Stats"
+statsLabel.Parent = mainFrame
+statsLabel.Position = UDim2.new(0, 0, 0.3, 0)
+statsLabel.Size = UDim2.new(1, 0, 0.3, 0)
+statsLabel.BackgroundTransparency = 1
+statsLabel.Font = Enum.Font.GothamBold
+statsLabel.TextSize = 11
+statsLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+statsLabel.RichText = true
+statsLabel.Text = "Loading..."
+
+local boostBtn = Instance.new("TextButton")
+boostBtn.Name = "BoostButton"
+boostBtn.Parent = mainFrame
+boostBtn.Position = UDim2.new(0.1, 0, 0.65, 0)
+boostBtn.Size = UDim2.new(0.8, 0, 0.25, 0)
+boostBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 60)
+boostBtn.Font = Enum.Font.GothamBold
+boostBtn.Text = "FPS BOOST: OFF"
+boostBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+boostBtn.TextSize = 10
+boostBtn.AutoButtonColor = true
+
+local btnCorner = Instance.new("UICorner")
+btnCorner.CornerRadius = UDim.new(0, 4)
+btnCorner.Parent = boostBtn
+
+local function formatTime(seconds)
+    local hours = math.floor(seconds / 3600)
+    local mins = math.floor((seconds % 3600) / 60)
+    local secs = seconds % 60
+    return string.format("%02d:%02d:%02d", hours, mins, secs)
+end
+
+local function getPing()
+    local success, ping = pcall(function()
+        return math.floor(StatsService.Network.ServerStatsItem["Data Ping"]:GetValue())
+    end)
+    return success and ping or 0
+end
+
+local function toggleFpsBoost()
+    fpsBoostActive = not fpsBoostActive
+    
+    if fpsBoostActive then
+        boostBtn.Text = "FPS BOOST: ON"
+        boostBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 100)
+        
+        settings().Rendering.QualityLevel = 1
+        Lighting.GlobalShadows = false
+        Lighting.FogEnd = 9e9
+        
+        for _, v in pairs(game:GetDescendants()) do
+            if v:IsA("Part") or v:IsA("UnionOperation") or v:IsA("MeshPart") then
+                v.Material = Enum.Material.SmoothPlastic
+                v.CastShadow = false
+            elseif v:IsA("ParticleEmitter") or v:IsA("Trail") or v:IsA("Fire") or v:IsA("Smoke") or v:IsA("Sparkles") then
+                v.Enabled = false
+            elseif v:IsA("Decal") or v:IsA("Texture") then
+                v.Transparency = 1
+            end
+        end
+    else
+        boostBtn.Text = "FPS BOOST: OFF"
+        boostBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 60)
+    end
+end
+
+boostBtn.MouseButton1Click:Connect(toggleFpsBoost)
+
+local lastUpdate = 0
+RunService.RenderStepped:Connect(function(deltaTime)
+    local now = tick()
+    if now - lastUpdate >= 0.5 then
+        local avgFPS = math.floor(1 / deltaTime)
+        local ping = getPing()
+        local elapsed = os.time() - startTime
+        
+        local pingColor = "rgb(0, 255, 150)"
+        if ping > 150 then pingColor = "rgb(255, 170, 0)" end
+
+        statsLabel.Text = string.format(
+            "FPS: <font color='rgb(255,255,255)'>%d</font> | PING: <font color='%s'>%dms</font> | %s", 
+            avgFPS, pingColor, ping, formatTime(elapsed)
+        )
+        lastUpdate = now
+    end
+end)
+
+local function activateAntiAfk()
+    VirtualUser:CaptureController()
+    VirtualUser:ClickButton2(Vector2.new(0,0))
+    titleLabel.TextColor3 = Color3.fromRGB(0, 255, 128)
+    task.wait(0.5)
+    titleLabel.TextColor3 = Color3.fromRGB(130, 130, 255)
+end
+
+LocalPlayer.Idled:Connect(activateAntiAfk)
+task.spawn(function()
+    while task.wait(300) do activateAntiAfk() end
+end)
+
+StarterGui:SetCore("SendNotification", {
+    Title = "Nova Anti-AFK + Boost",
+    Text = "Speed boost and anti-AFK ready!",
+    Duration = 5
+})
