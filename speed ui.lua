@@ -154,21 +154,19 @@ Close_ImageButton.Position = UDim2.new(0.1021, 0, 0.0743, 0)
 Close_ImageButton.Size = UDim2.new(0, 59, 0, 59) -- Kare boyut (genişlik = yükseklik)
 Close_ImageButton.Image = "https://www.roblox.com/Thumbs/Asset.ashx?width=420&height=420&assetId=74514038997246"
 
-
+-- Yuvarlak köşeler
 local UICorner = Instance.new("UICorner")
-UICorner.CornerRadius = UDim.new(1, 0) 
+UICorner.CornerRadius = UDim.new(1, 0) -- Tam yuvarlak
 UICorner.Parent = Close_ImageButton
 
+-- Kan kırmızısı çerçeve
 local UIStroke = Instance.new("UIStroke")
-UIStroke.Color = Color3.fromRGB(220, 20, 60) 
-UIStroke.Thickness = 3
+UIStroke.Color = Color3.fromRGB(139, 0, 0) -- Kan kırmızısı (Dark Red)
+UIStroke.Thickness = 4 -- Biraz kalın
+UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border -- Kenara uygula
 UIStroke.Parent = Close_ImageButton
 
-local StrokeCorner = Instance.new("UICorner")
-StrokeCorner.CornerRadius = UDim.new(1, 0)
-StrokeCorner.Parent = Close_ImageButton
-
-Close_ImageButton.Visible = false -- son
+Close_ImageButton.Visible = false
 
 	UICorner.Name = "MainCorner"
 	UICorner.CornerRadius = UDim.new(0, 9)
