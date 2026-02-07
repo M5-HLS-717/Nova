@@ -34,11 +34,11 @@ local ProtectGui = protectgui or (syn and syn.protect_gui) or function(f) end
 
 local Themes = {
 	Names = {
-		"SpeedHubX"
+		"NovaHub"
 	},
-	SpeedHubX = {
-		Name = "SpeedHubX",
-	Accent = Color3.fromRGB(255, 0, 0),
+	NovaHub = {
+		Name = "NovaHub",
+	Accent = Color3.fromRGB(0, 150, 255),
 
 		AcrylicMain = Color3.fromRGB(20, 20, 20),
 		AcrylicBorder = Color3.fromRGB(40, 40, 40), 
