@@ -139,7 +139,7 @@ local function CloseOpen()
 	Close_ImageButton.BorderColor3 = Color3.fromRGB(0, 150, 255)
 	Close_ImageButton.Position = UDim2.new(0.1021, 0, 0.0743, 0)
 	Close_ImageButton.Size = UDim2.new(0, 59, 0, 49)
-	Close_ImageButton.Image = "rbxassetid://113924598635541"
+	Close_ImageButton.Image = "rbxassetid://128524647225770"
 	Close_ImageButton.Visible = false
 
 	UICorner.Name = "MainCorner"
