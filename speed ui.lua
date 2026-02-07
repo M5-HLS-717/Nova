@@ -1,7 +1,3 @@
-local message = Instance.new("Message", workspace)
-message.Text = "Hello\nPlease Join Our New Server, More Updates / Supports\nDiscord: discord.gg/novahubofficial (Copied)"
-setclipboard("discord.gg/novahubofficial")
-
 local Lighting = game:GetService("Lighting")
 local RunService = game:GetService("RunService")
 local LocalPlayer = game:GetService("Players").LocalPlayer
