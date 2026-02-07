@@ -35,65 +35,65 @@ local Themes = {
 	NovaHub = {
 		Name = "NovaHub",
 
-		-- Ana vurgu rengi - Kırmızı
-		Accent = Color3.fromRGB(220, 20, 60),
+		-- Ana vurgu rengi - Koyu Kan Kırmızısı
+		Accent = Color3.fromRGB(139, 0, 0),
 
-		-- Arka plan - Koyu kırmızı-siyah
-		AcrylicMain = Color3.fromRGB(40, 15, 15),
-		AcrylicBorder = Color3.fromRGB(180, 0, 0),
+		-- Arka plan - Çok koyu kırmızı-siyah
+		AcrylicMain = Color3.fromRGB(20, 5, 5),
+		AcrylicBorder = Color3.fromRGB(100, 0, 0),
 		AcrylicGradient = ColorSequence.new(
-			Color3.fromRGB(60, 20, 20),
-			Color3.fromRGB(30, 10, 10)
+			Color3.fromRGB(40, 10, 10),
+			Color3.fromRGB(15, 5, 5)
 		),
-		AcrylicNoise = 0.85,
+		AcrylicNoise = 0.9,
 
 		-- Başlık çubuğu
-		TitleBarLine = Color3.fromRGB(255, 0, 0),
+		TitleBarLine = Color3.fromRGB(139, 0, 0),
 
-		-- Tab rengi - Kırmızı
-		Tab = Color3.fromRGB(200, 0, 0),
+		-- Tab rengi - Koyu kırmızı
+		Tab = Color3.fromRGB(120, 0, 0),
 
-		-- Elementler - Kırmızı tonları
-		Element = Color3.fromRGB(180, 0, 0),
-		ElementBorder = Color3.fromRGB(140, 0, 0),
-		InElementBorder = Color3.fromRGB(160, 0, 0),
-		ElementTransparency = 0.75,
+		-- Elementler - Koyu kırmızı tonları
+		Element = Color3.fromRGB(100, 0, 0),
+		ElementBorder = Color3.fromRGB(80, 0, 0),
+		InElementBorder = Color3.fromRGB(90, 0, 0),
+		ElementTransparency = 0.8,
 
-		-- Toggle - Parlak kırmızı
-		ToggleSlider = Color3.fromRGB(255, 50, 50),
+		-- Toggle - Koyu parlak kırmızı
+		ToggleSlider = Color3.fromRGB(178, 34, 34),
 		ToggleToggled = Color3.fromRGB(255, 255, 255),
 
 		-- Slider
-		SliderRail = Color3.fromRGB(255, 100, 100),
+		SliderRail = Color3.fromRGB(139, 0, 0),
 
-		-- Dropdown - Kırmızı
-		DropdownFrame = Color3.fromRGB(70, 20, 20),
-		DropdownHolder = Color3.fromRGB(90, 25, 25),
-		DropdownBorder = Color3.fromRGB(180, 0, 0),
-		DropdownOption = Color3.fromRGB(220, 0, 0),
+		-- Dropdown - Koyu kırmızı
+		DropdownFrame = Color3.fromRGB(30, 8, 8),
+		DropdownHolder = Color3.fromRGB(45, 12, 12),
+		DropdownBorder = Color3.fromRGB(120, 0, 0),
+		DropdownOption = Color3.fromRGB(139, 0, 0),
 
 		-- Keybind
-		Keybind = Color3.fromRGB(200, 0, 0),
+		Keybind = Color3.fromRGB(120, 0, 0),
 
 		-- Input
-		Input = Color3.fromRGB(240, 180, 180),
-		InputFocused = Color3.fromRGB(180, 0, 0),
-		InputIndicator = Color3.fromRGB(255, 50, 50),
+		Input = Color3.fromRGB(200, 150, 150),
+		InputFocused = Color3.fromRGB(139, 0, 0),
+		InputIndicator = Color3.fromRGB(178, 34, 34),
 		
 		-- Dialog
-		Dialog = Color3.fromRGB(60, 20, 20),
-		DialogHolder = Color3.fromRGB(85, 30, 30),
-		DialogHolderLine = Color3.fromRGB(200, 0, 0),
-		DialogButton = Color3.fromRGB(80, 25, 25),
-		DialogButtonBorder = Color3.fromRGB(255, 0, 0),
-		DialogBorder = Color3.fromRGB(180, 0, 0),
-		DialogInput = Color3.fromRGB(80, 25, 25),
-		DialogInputLine = Color3.fromRGB(255, 50, 50),
+		Dialog = Color3.fromRGB(35, 10, 10),
+		DialogHolder = Color3.fromRGB(50, 15, 15),
+		DialogHolderLine = Color3.fromRGB(139, 0, 0),
+		DialogButton = Color3.fromRGB(45, 12, 12),
+		DialogButtonBorder = Color3.fromRGB(178, 34, 34),
+		DialogBorder = Color3.fromRGB(100, 0, 0),
+		DialogInput = Color3.fromRGB(45, 12, 12),
+		DialogInputLine = Color3.fromRGB(178, 34, 34),
 		
-		-- Metin renkleri
-		Text = Color3.fromRGB(255, 240, 240),
-		SubText = Color3.fromRGB(240, 170, 170),
-		Hover = Color3.fromRGB(255, 100, 100),
+		-- Metin renkleri - soluk kırmızı/beyaz
+		Text = Color3.fromRGB(255, 235, 235),
+		SubText = Color3.fromRGB(200, 150, 150),
+		Hover = Color3.fromRGB(178, 34, 34),
 		HoverChange = 0.08,
 	}    
 }
