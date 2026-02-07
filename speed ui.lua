@@ -130,18 +130,18 @@ local function CloseOpen()
 		ProtectGui(ScreenGui)
 	end
 
-ScreenGui.Name = "OpenClose"
-ScreenGui.Parent = RunService:IsStudio() and LocalPlayer.PlayerGui or (gethui() or cloneref(game:GetService("CoreGui")) or game:GetService("CoreGui"))
-ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	ScreenGui.Name = "OpenClose"
+	ScreenGui.Parent = RunService:IsStudio() and LocalPlayer.PlayerGui or (gethui() or cloneref(game:GetService("CoreGui")) or game:GetService("CoreGui"))
+	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-Close_ImageButton.Parent = ScreenGui
-Close_ImageButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-Close_ImageButton.BorderColor3 = Color3.fromRGB(0, 150, 255) 
-Close_ImageButton.Position = UDim2.new(0.1021, 0, 0.0743, 0)
-Close_ImageButton.Size = UDim2.new(0, 59, 0, 49)
-Close_ImageButton.Image = "rbxassetid://71789972504071" 
-Close_ImageButton.Visible = false
-	
+	Close_ImageButton.Parent = ScreenGui
+	Close_ImageButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	Close_ImageButton.BorderColor3 = Color3.fromRGB(0, 150, 255)
+	Close_ImageButton.Position = UDim2.new(0.1021, 0, 0.0743, 0)
+	Close_ImageButton.Size = UDim2.new(0, 59, 0, 49)
+	Close_ImageButton.Image = "rbxassetid://71789972504071"
+	Close_ImageButton.Visible = false
+
 	UICorner.Name = "MainCorner"
 	UICorner.CornerRadius = UDim.new(0, 9)
 	UICorner.Parent = Close_ImageButton
