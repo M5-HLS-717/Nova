@@ -142,17 +142,33 @@ local function CloseOpen()
 		ProtectGui(ScreenGui)
 	end
 
-	ScreenGui.Name = "OpenClose"
-	ScreenGui.Parent = RunService:IsStudio() and LocalPlayer.PlayerGui or (gethui() or cloneref(game:GetService("CoreGui")) or game:GetService("CoreGui"))
-	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+ScreenGui.Name = "OpenClose"
+ScreenGui.Parent = RunService:IsStudio() and LocalPlayer.PlayerGui or (gethui() or cloneref(game:GetService("CoreGui")) or game:GetService("CoreGui"))
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-	Close_ImageButton.Parent = ScreenGui
-	Close_ImageButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-	Close_ImageButton.BorderColor3 = Color3.fromRGB(0, 150, 255)
-	Close_ImageButton.Position = UDim2.new(0.1021, 0, 0.0743, 0)
-	Close_ImageButton.Size = UDim2.new(0, 59, 0, 49)
-	Close_ImageButton.Image = "https://www.roblox.com/Thumbs/Asset.ashx?width=420&height=420&assetId=74514038997246"
-	Close_ImageButton.Visible = false
+Close_ImageButton.Parent = ScreenGui
+Close_ImageButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Close_ImageButton.BackgroundTransparency = 1 -- Arka plan şeffaf
+Close_ImageButton.BorderSizePixel = 0 -- Kenarlık yok
+Close_ImageButton.Position = UDim2.new(0.1021, 0, 0.0743, 0)
+Close_ImageButton.Size = UDim2.new(0, 59, 0, 59) -- Kare boyut (genişlik = yükseklik)
+Close_ImageButton.Image = "https://www.roblox.com/Thumbs/Asset.ashx?width=420&height=420&assetId=74514038997246"
+
+
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(1, 0) 
+UICorner.Parent = Close_ImageButton
+
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Color = Color3.fromRGB(220, 20, 60) 
+UIStroke.Thickness = 3
+UIStroke.Parent = Close_ImageButton
+
+local StrokeCorner = Instance.new("UICorner")
+StrokeCorner.CornerRadius = UDim.new(1, 0)
+StrokeCorner.Parent = Close_ImageButton
+
+Close_ImageButton.Visible = false -- son
 
 	UICorner.Name = "MainCorner"
 	UICorner.CornerRadius = UDim.new(0, 9)
