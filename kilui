@@ -1138,7 +1138,7 @@ function bd:AddWindow(bi, bj)
         function bx:AddTab(bT)
             local bU = {}
             bT = tostring(bT or "New Tab")
-            bK.Visible = true
+            bK.Visible = false
             local bV = c:FindFirstChild("TabButton"):Clone()
             bV.Parent = bM
             bV.Text = bT
