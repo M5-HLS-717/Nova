@@ -1,4 +1,4 @@
--- Private lib
+-- Private lib v1
 
 local a = {
     main_color = Color3.fromRGB(41, 74, 122),
@@ -743,7 +743,6 @@ ak.BackgroundColor3 = Color3.new(1, 1, 1)
 ak.BackgroundTransparency = 1
 ak.Position = UDim2.new(0, 20, 0, 20)
 ak.Size = UDim2.new(1, 20, 1, -20)
-script.Parent = b
 local al = game:GetService("UserInputService")
 local am = game:GetService("TweenService")
 local an = game:GetService("RunService")
@@ -1980,11 +1979,13 @@ function bd:AddWindow(bi, bj)
     end
     return bx, e
 end
-script.AncestryChanged:Connect(
-    function()
-        if not script.Parent then
-            av()
+if script and script.Parent then
+    script.AncestryChanged:Connect(
+        function()
+            if not script.Parent then
+                av()
+            end
         end
-    end
-)
+    )
+end
 return bd
