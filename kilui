@@ -1,5 +1,3 @@
--- Uİ MADDE BY HALİS ANTEO.
-
 local a = {
     main_color = Color3.fromRGB(41, 74, 122),
     min_size = Vector2.new(400, 300),
@@ -1340,8 +1338,7 @@ function bd:AddWindow(bi, bj)
                 end
                 function bU:AddButton(cn, co)
                     cn = tostring(cn or "New Button")
-                    co = typeof(co) == "function" and co or function()
-                        end
+                    co = typeof(co) == "function" and co or function() end
                     local b5 = c:FindFirstChild("Button"):Clone()
                     local c1 = c0:FindFirstChild("TabScroller")
                     b5.Parent = c1 or c0
@@ -1364,8 +1361,7 @@ function bd:AddWindow(bi, bj)
                 function bU:AddSwitch(cq, co)
                     local cr = {}
                     cq = tostring(cq or "New Switch")
-                    co = typeof(co) == "function" and co or function()
-                        end
+                    co = typeof(co) == "function" and co or function() end
                     local cs = c:FindFirstChild("Switch"):Clone()
                     local c1 = c0:FindFirstChild("TabScroller")
                     cs.Parent = c1 or c0
@@ -1393,8 +1389,7 @@ function bd:AddWindow(bi, bj)
                 end
                 function bU:AddTextBox(cw, co, cx)
                     cw = tostring(cw or "New TextBox")
-                    co = typeof(co) == "function" and co or function()
-                        end
+                    co = typeof(co) == "function" and co or function() end
                     cx = typeof(cx) == "table" and cx or {clear = false}
                     cx.clear = cx.clear == true
                     local cy = c:FindFirstChild("TextBox"):Clone()
@@ -1424,8 +1419,7 @@ function bd:AddWindow(bi, bj)
                 function bU:AddSlider(cB, co, cC)
                     local cD = {}
                     cB = tostring(cB or "New Slider")
-                    co = typeof(co) == "function" and co or function()
-                        end
+                    co = typeof(co) == "function" and co or function() end
                     cC = typeof(cC) == "table" and cC or {}
                     cC.min = cC.min or 0
                     cC.max = cC.max or 100
@@ -1517,8 +1511,7 @@ function bd:AddWindow(bi, bj)
                 function bU:AddKeybind(cN, co, cO)
                     local cP = {}
                     cN = tostring(cN or "New Keybind")
-                    co = typeof(co) == "function" and co or function()
-                        end
+                    co = typeof(co) == "function" and co or function() end
                     cO = typeof(cO) == "table" and cO or {}
                     cO.standard = cO.standard or Enum.KeyCode.RightShift
                     local cQ = c:FindFirstChild("Keybind"):Clone()
@@ -1578,8 +1571,7 @@ function bd:AddWindow(bi, bj)
                 function bU:AddDropdown(cV, co)
                     local cW = {}
                     cV = tostring(cV or "New Dropdown")
-                    co = typeof(co) == "function" and co or function()
-                        end
+                    co = typeof(co) == "function" and co or function() end
                     local cX = c:FindFirstChild("Dropdown"):Clone()
                     local cY = cX:FindFirstChild("Box")
                     local cZ = cY:FindFirstChild("Objects")
@@ -1608,7 +1600,6 @@ function bd:AddWindow(bi, bj)
                     cY.Position = UDim2.new(0, 0, 0, 25)
                     cX.TextColor3 = Color3.new(1, 1, 1)
                     local bF = false
-                    local d1 = false
                     cX.MouseButton1Click:Connect(
                         function()
                             bF = not bF
@@ -1621,51 +1612,13 @@ function bd:AddWindow(bi, bj)
                                     return
                                 end
                                 bk = true
-                                local d3 = cX.AbsolutePosition.Y
-                                local d4 = cX.AbsoluteSize.Y
-                                local d5 = e.AbsolutePosition.Y + e.AbsoluteSize.Y
-                                local d6 = d5 - (d3 + d4)
-                                if d6 < d2 then
-                                    d1 = true
-                                    cY.Position = UDim2.new(0, 0, 0, -d2 - 5)
-                                    cY.Size = UDim2.new(1, 0, 0, 0)
-                                    local aF =
-                                        TweenInfo.new(bj.tween_time, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-                                    local aG =
-                                        am:Create(
-                                        cY,
-                                        aF,
-                                        {Size = UDim2.new(1, 0, 0, d2), Position = UDim2.new(0, 0, 0, -d2 - 5)}
-                                    )
-                                    aG:Play()
-                                    az(cF, {Rotation = -90}, bj.tween_time)
-                                else
-                                    d1 = false
-                                    cY.Position = UDim2.new(0, 0, 0, 25)
-                                    cY.Size = UDim2.new(1, 0, 0, 0)
-                                    az(cY, {Size = UDim2.new(1, 0, 0, d2)}, bj.tween_time)
-                                    az(cF, {Rotation = 90}, bj.tween_time)
-                                end
+                                cY.Position = UDim2.new(0, 0, 0, 25)
+                                cY.Size = UDim2.new(1, 0, 0, 0)
+                                az(cY, {Size = UDim2.new(1, 0, 0, d2)}, bj.tween_time)
+                                az(cF, {Rotation = 90}, bj.tween_time)
                             else
                                 bk = false
-                                if d1 then
-                                    local aF =
-                                        TweenInfo.new(bj.tween_time, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-                                    local aG =
-                                        am:Create(
-                                        cY,
-                                        aF,
-                                        {Size = UDim2.new(1, 0, 0, 0), Position = UDim2.new(0, 0, 0, -5)}
-                                    )
-                                    aG:Play()
-                                    aG.Completed:Connect(
-                                        function()
-                                            cY.Position = UDim2.new(0, 0, 0, 25)
-                                        end
-                                    )
-                                else
-                                    az(cY, {Size = UDim2.new(1, 0, 0, 0)}, bj.tween_time)
-                                end
+                                az(cY, {Size = UDim2.new(1, 0, 0, 0)}, bj.tween_time)
                                 az(cF, {Rotation = -90}, bj.tween_time)
                             end
                         end
@@ -1706,18 +1659,7 @@ function bd:AddWindow(bi, bj)
                             if #cZ:GetChildren() - 1 >= 10 then
                                 cZ.CanvasSize = UDim2.new(0, 0, (#cZ:GetChildren() - 1) * 0.1, 0)
                             end
-                            if d1 then
-                                local aF = TweenInfo.new(bj.tween_time, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-                                local aG =
-                                    am:Create(
-                                    cY,
-                                    aF,
-                                    {Size = UDim2.new(1, 0, 0, d2), Position = UDim2.new(0, 0, 0, -d2 - 5)}
-                                )
-                                aG:Play()
-                            else
-                                az(cY, {Size = UDim2.new(1, 0, 0, d2)}, bj.tween_time)
-                            end
+                            az(cY, {Size = UDim2.new(1, 0, 0, d2)}, bj.tween_time)
                         end
                         aZ.MouseButton1Click:Connect(
                             function()
@@ -1725,28 +1667,7 @@ function bd:AddWindow(bi, bj)
                                     cX.Text = "      [ " .. d7 .. " ]"
                                     bk = false
                                     bF = false
-                                    if d1 then
-                                        local aF =
-                                            TweenInfo.new(
-                                            bj.tween_time,
-                                            Enum.EasingStyle.Quad,
-                                            Enum.EasingDirection.Out
-                                        )
-                                        local aG =
-                                            am:Create(
-                                            cY,
-                                            aF,
-                                            {Size = UDim2.new(1, 0, 0, 0), Position = UDim2.new(0, 0, 0, -5)}
-                                        )
-                                        aG:Play()
-                                        aG.Completed:Connect(
-                                            function()
-                                                cY.Position = UDim2.new(0, 0, 0, 25)
-                                            end
-                                        )
-                                    else
-                                        az(cY, {Size = UDim2.new(1, 0, 0, 0)}, bj.tween_time)
-                                    end
+                                    az(cY, {Size = UDim2.new(1, 0, 0, 0)}, bj.tween_time)
                                     az(cF, {Rotation = -90}, bj.tween_time)
                                     pcall(co, d7)
                                 end
@@ -1774,8 +1695,7 @@ function bd:AddWindow(bi, bj)
                 end
                 function bU:AddColorPicker(co)
                     local de = {}
-                    co = typeof(co) == "function" and co or function()
-                        end
+                    co = typeof(co) == "function" and co or function() end
                     local df = c:FindFirstChild("ColorPicker"):Clone()
                     local c1 = c0:FindFirstChild("TabScroller")
                     df.Parent = c1 or c0
