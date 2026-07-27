@@ -1,2 +1,3 @@
-getgenv().script_id = '2y8zffy6924k03zb9c7frsycy1t0vxpn';
-loadstring(game:HttpGet('https://pastefy.app/vs2Pffpz/raw'))()Z
+getgenv().SCRIPT_KEY = "b39b789d-930b-40d7-8b9d-925d15eb0baf"
+
+loadstring(game:HttpGet("https://api.jnkie.com/api/v1/luascripts/public/bf3b403424b709ea0e425a2343af979438a3ef4d5d2b909a79e53547c55f82c4/download"))()
